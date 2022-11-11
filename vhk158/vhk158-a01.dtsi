@@ -431,7 +431,7 @@
 		reg = <0x20>;
 		gpio-controller; /* interrupt not connected */
 		#gpio-cells = <2>;
-		gpio-line-names = "", "", "QSFPDD1_MODSELL", "QSFPDD1_MODSELL", /* 0 - 3 */
+		gpio-line-names = "", "", "QSFPDD1_MODSELL", "QSFPDD2_MODSELL", /* 0 - 3 */
 				"PMBUS2_INA226_ALERT", "", "", "", /* 4 - 7 */
 				"FMCP1_FMC_PRSNT_M2C_B", "", "FMCP1_FMCP_PRSNT_M2C_B", "", /* 10 - 13 */
 				"VCCINT_VRHOT_B", "8A34001_EXP_RST_B", "PMBUS_ALERT", "PMBUS1_INA226_ALERT"; /* 14 - 17 */
@@ -625,12 +625,28 @@
 			#address-cells = <1>;
 			#size-cells = <0>;
 			reg = <5>;
+			vc7_1: clock-generator@9 {
+				compatible = "renesas,rc21008a";
+				clock-output-names = "rc21008a-0";
+				reg = <0x9>;
+				#clock-cells = <1>;
+				clocks = <&vc7_xin>;
+				clock-names = "xin";
+			};
 			/* i2c@9 - U299 */
 		};
 		rc21008a_gtclk2: i2c@6 {
 			#address-cells = <1>;
 			#size-cells = <0>;
 			reg = <6>;
+			vc7_2: clock-generator@9 {
+				compatible = "renesas,rc21008a";
+				clock-output-names = "rc21008a-1";
+				reg = <0x9>;
+				#clock-cells = <1>;
+				clocks = <&vc7_xin>;
+				clock-names = "xin";
+			};
 			/* i2c@9 - U300 */
 		};
 		sync_8a34001: i2c@7 {
@@ -643,7 +659,7 @@
 };
 };
 
-	fragment@5 {
+fragment@5{
                 target = <&i2c1>;
                 __overlay__ {
 	#address-cells = <1>;
