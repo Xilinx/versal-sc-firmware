@@ -258,11 +258,11 @@
 				interrupts = <0 89 4 0 90 4>;
 				reg = <0x0 0x80080000 0x0 0x1000 0x0 0x80081000 0x0 0x1000 0x0 0x80082000 0x0 0x1000>;
 			};
-			hsdp_axi_bram_ctrl_1: axi_bram_ctrl@a0000000 {
+			hsdp_axi_bram_ctrl_1: axi_bram_ctrl@a0020000 {
 				clock-names = "s_axi_aclk";
 				clocks = <&zynqmp_clk 72>;
 				compatible = "xlnx,axi-bram-ctrl-4.1";
-				reg = <0x0 0xa0000000 0x0 0x4000>;
+				reg = <0x0 0xa0020000 0x0 0x4000>;
 				xlnx,bram-addr-width = <0xa>;
 				xlnx,bram-inst-mode = "EXTERNAL";
 				xlnx,ecc = <0x0>;
