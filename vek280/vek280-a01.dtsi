@@ -10,6 +10,7 @@
 /plugin/;
 /{
     compatible = "xlnx,zynqmp-sc-vek280-revA", "xlnx,zynqmp-vek280-revA",
+		 "xlnx,zynqmp-sc-vek280-revB", "xlnx,zynqmp-vek280-revB",
                 "xlnx,zynqmp-vek280", "xlnx,zynqmp";
 
     fragment@0 {

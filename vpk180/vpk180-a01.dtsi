@@ -10,6 +10,7 @@
 /plugin/;
 / {
 	compatible = "xlnx,zynqmp-sc-vpk180-revA", "xlnx,zynqmp-vpk180-revA",
+		     "xlnx,zynqmp-sc-vpk180-revB", "xlnx,zynqmp-vpk180-revB",
 		     "xlnx,zynqmp-vpk180", "xlnx,zynqmp";
 			 
 	fragment@0 {
@@ -218,11 +219,11 @@
 				interrupts = <0 89 4 0 90 4>;
 				reg = <0x0 0x80080000 0x0 0x1000 0x0 0x80081000 0x0 0x1000 0x0 0x80082000 0x0 0x1000>;
 			};
-			hsdp_axi_bram_ctrl_1: axi_bram_ctrl@a0000000 {
+			hsdp_axi_bram_ctrl_1: axi_bram_ctrl@a0020000 {
 				clock-names = "s_axi_aclk";
 				clocks = <&zynqmp_clk 72>;
 				compatible = "xlnx,axi-bram-ctrl-4.1";
-				reg = <0x0 0xa0000000 0x0 0x4000>;
+				reg = <0x0 0xa0020000 0x0 0x4000>;
 				xlnx,bram-addr-width = <0xa>;
 				xlnx,bram-inst-mode = "EXTERNAL";
 				xlnx,ecc = <0x0>;
@@ -238,7 +239,7 @@
 				xlnx,s-axi-supports-narrow-burst = <0x0>;
 				xlnx,single-port-bram = <0x1>;
 			};
-			hsdp_axi_dma_0: dma@a0010000 {
+			hsdp_axi_dma_0: dma@a0000000 {
 				#dma-cells = <1>;
 				clock-names = "s_axi_lite_aclk", "m_axi_sg_aclk", "m_axi_mm2s_aclk", "m_axi_s2mm_aclk";
 				clocks = <&zynqmp_clk 72>, <&zynqmp_clk 72>, <&zynqmp_clk 72>, <&zynqmp_clk 72>;
@@ -246,18 +247,18 @@
 				interrupt-names = "mm2s_introut", "s2mm_introut";
 				interrupt-parent = <&gic>;
 				interrupts = <0 104 4 0 105 4>;
-				reg = <0x0 0xa0010000 0x0 0x10000>;
+				reg = <0x0 0xa0000000 0x0 0x10000>;
 				xlnx,addrwidth = <0x30>;
 				xlnx,include-sg ;
 				xlnx,sg-length-width = <0x1a>;
-				dma-channel@a0010000 {
+				dma-channel@a0000000 {
 					compatible = "xlnx,axi-dma-mm2s-channel";
 					dma-channels = <0x1>;
 					interrupts = <0 104 4>;
 					xlnx,datawidth = <0x80>;
 					xlnx,device-id = <0x0>;
 				};
-				dma-channel@a0010030 {
+				dma-channel@a0000030 {
 					compatible = "xlnx,axi-dma-s2mm-channel";
 					dma-channels = <0x1>;
 					interrupts = <0 105 4>;
@@ -265,11 +266,11 @@
 					xlnx,device-id = <0x0>;
 				};
 			};
-			hsdp_hsdp_ctl_stat_regs: hsdp_ctl_v1_0@a0020000 {
+			hsdp_hsdp_ctl_stat_regs: hsdp_ctl_v1_0@a0010000 {
 				clock-names = "s00_axi_hsdp_aclk";
 				clocks = <&zynqmp_clk 72>;
 				compatible = "xlnx,hsdp-ctl-v1-0-1.0";
-				reg = <0x0 0xa0020000 0x0 0x10000>;
+				reg = <0x0 0xa0010000 0x0 0x10000>;
 				xlnx,prog-empty-cnt-width = <0x20>;
 				xlnx,s00-axi-hsdp-addr-width = <0x6>;
 				xlnx,s00-axi-hsdp-data-width = <0x20>;
