@@ -169,9 +169,43 @@
 		interrupts = <0 92 4>;
 		reg = <0x0 0x80060000 0x0 0x10000>;
 
-		i2c@18 {
+		sysmon: i2c@18 {
+			#address-cells = <1>;
+			#size-cells = <0>;
+			compatible = "xlnx,versal-sysmon";
 			reg = <0x18>;
-			compatible = "xlnx,xsysmoni2c";
+			xlnx,numchannels = [07];
+			status = "okay";
+			#io-channel-cells = <1>;
+			xlnx,scaledint;
+			supply@0 {
+				reg = <0>;
+				xlnx,name = "vccaux";
+			};
+			supply@1 {
+				reg = <1>;
+				xlnx,name = "vccaux_pmc";
+			};
+			supply@2 {
+				reg = <2>;
+				xlnx,name = "vcc_pmc";
+			};
+			supply@3 {
+				reg = <3>;
+				xlnx,name = "vcc_psfp";
+			};
+			supply@4 {
+				reg = <4>;
+				xlnx,name = "vcc_pslp";
+			};
+			supply@5 {
+				reg = <5>;
+				xlnx,name = "vcc_soc";
+			};
+			supply@6 {
+				reg = <6>;
+				xlnx,name = "vp_vn";
+			};
 		};
             };
 	    debug_bridge_0: debug_bridge@80010000 {
@@ -291,6 +325,13 @@
      fragment@3 {
         target-path = "/";
         __overlay__ {
+	    versal_iio: versal {
+		compatible = "iio-hwmon";
+		io-channels = <&sysmon 6>, <&sysmon 5>, <&sysmon 4>,
+			      <&sysmon 3>, <&sysmon 2>, <&sysmon 1>,
+			      <&sysmon 0>, <&sysmon 7>, <&sysmon 8>;
+		};
+
             vc7_xin: vc7-xin {
 		compatible = "fixed-clock";
 		#clock-cells = <0>;
