@@ -155,6 +155,10 @@
 				interrupt-parent = <&gic>;
 				interrupts = <0 92 4>;
 				reg = <0x0 0x80060000 0x0 0x10000>;
+				i2c@18 {
+					reg = <0x18>;
+					compatible = "xlnx,xsysmoni2c";
+				};
 			};
 			debug_bridge_0: debug_bridge@80010000 {
 				clock-names = "s_axi_aclk";
@@ -446,6 +450,7 @@ fragment@4 {
 				factory-fout = <100000000>;
 				clock-frequency = <100000000>;
 				clock-output-names = "fmc_si570";
+				silabs,skip-recall;
 			};
 
 		};
@@ -505,6 +510,7 @@ fragment@5 {
 				factory-fout = <200000000>;
 				clock-frequency = <200000000>;
 				clock-output-names = "lpddr4_clk3";
+				silabs,skip-recall;
 			};
 		};
 		lpddr4_si570_clk2_i2c: i2c@4 {
@@ -519,6 +525,7 @@ fragment@5 {
 				factory-fout = <200000000>;
 				clock-frequency = <200000000>;
 				clock-output-names = "lpddr4_clk2";
+				silabs,skip-recall;
 			};
 		};
 		lpddr4_si570_clk1_i2c: i2c@5 {
@@ -533,6 +540,7 @@ fragment@5 {
 				factory-fout = <200000000>;
 				clock-frequency = <200000000>;
 				clock-output-names = "lpddr4_clk1";
+				silabs,skip-recall;
 			};
 		};
 		qsfpdd_i2c: i2c@6 {
