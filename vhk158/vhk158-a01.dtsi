@@ -173,7 +173,6 @@
 					xlnx,numchannels = [07];
 					status = "okay";
 					#io-channel-cells = <1>;
-					xlnx,scaledint;
 					supply@0 {
 						reg = <0>;
 						xlnx,name = "vccaux";
