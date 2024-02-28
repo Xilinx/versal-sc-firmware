@@ -173,7 +173,6 @@
 					xlnx,numchannels = [07];
 					status = "okay";
 					#io-channel-cells = <1>;
-					xlnx,scaledint;
 					supply@0 {
 						reg = <0>;
 						xlnx,name = "vccaux";
@@ -258,11 +257,11 @@
 				interrupts = <0 89 4 0 90 4>;
 				reg = <0x0 0x80080000 0x0 0x1000 0x0 0x80081000 0x0 0x1000 0x0 0x80082000 0x0 0x1000>;
 			};
-			hsdp_axi_bram_ctrl_1: axi_bram_ctrl@a0000000 {
+			hsdp_axi_bram_ctrl_1: axi_bram_ctrl@a0020000 {
 				clock-names = "s_axi_aclk";
 				clocks = <&zynqmp_clk 72>;
 				compatible = "xlnx,axi-bram-ctrl-4.1";
-				reg = <0x0 0xa0000000 0x0 0x4000>;
+				reg = <0x0 0xa0020000 0x0 0x4000>;
 				xlnx,bram-addr-width = <0xa>;
 				xlnx,bram-inst-mode = "EXTERNAL";
 				xlnx,ecc = <0x0>;
@@ -431,7 +430,7 @@
 		reg = <0x20>;
 		gpio-controller; /* interrupt not connected */
 		#gpio-cells = <2>;
-		gpio-line-names = "", "", "QSFPDD1_MODSELL", "QSFPDD1_MODSELL", /* 0 - 3 */
+		gpio-line-names = "", "", "QSFPDD1_MODSELL", "QSFPDD2_MODSELL", /* 0 - 3 */
 				"PMBUS2_INA226_ALERT", "", "", "", /* 4 - 7 */
 				"FMCP1_FMC_PRSNT_M2C_B", "", "FMCP1_FMCP_PRSNT_M2C_B", "", /* 10 - 13 */
 				"VCCINT_VRHOT_B", "8A34001_EXP_RST_B", "PMBUS_ALERT", "PMBUS1_INA226_ALERT"; /* 14 - 17 */
@@ -625,12 +624,28 @@
 			#address-cells = <1>;
 			#size-cells = <0>;
 			reg = <5>;
+			vc7_1: clock-generator@9 {
+				compatible = "renesas,rc21008a";
+				clock-output-names = "rc21008a-0";
+				reg = <0x9>;
+				#clock-cells = <1>;
+				clocks = <&vc7_xin>;
+				clock-names = "xin";
+			};
 			/* i2c@9 - U299 */
 		};
 		rc21008a_gtclk2: i2c@6 {
 			#address-cells = <1>;
 			#size-cells = <0>;
 			reg = <6>;
+			vc7_2: clock-generator@9 {
+				compatible = "renesas,rc21008a";
+				clock-output-names = "rc21008a-1";
+				reg = <0x9>;
+				#clock-cells = <1>;
+				clocks = <&vc7_xin>;
+				clock-names = "xin";
+			};
 			/* i2c@9 - U300 */
 		};
 		sync_8a34001: i2c@7 {
@@ -643,7 +658,7 @@
 };
 };
 
-	fragment@5 {
+fragment@5{
                 target = <&i2c1>;
                 __overlay__ {
 	#address-cells = <1>;
