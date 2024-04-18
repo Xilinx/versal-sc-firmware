@@ -8,157 +8,152 @@
 
 /dts-v1/;
 /plugin/;
-/{
-    compatible = "xlnx,zynqmp-sc-vek280-revA", "xlnx,zynqmp-vek280-revA",
-		 "xlnx,zynqmp-sc-vek280-revB", "xlnx,zynqmp-vek280-revB",
-                "xlnx,zynqmp-vek280", "xlnx,zynqmp";
 
-    fragment@0 {
-        target = <&fpga_full>;
-        overlay0: __overlay__ {
-            #address-cells = <2>;
-            #size-cells = <2>;
-            firmware-name = "vek280-a01.bit.bin";
-            pid = <0x0>;
-            resets = <&zynqmp_reset 116>;
-            uid = <0xd91b5b60>;
-        };
-    };
+compatible = "xlnx,zynqmp-sc-vek280-revA", "xlnx,zynqmp-vek280-revA",
+		"xlnx,zynqmp-sc-vek280-revB", "xlnx,zynqmp-vek280-revB",
+		"xlnx,zynqmp-vek280", "xlnx,zynqmp";
 
-    fragment@1 {
-        target = <&amba>;
-        overlay1: __overlay__ {
-            afi0: afi0 {
-                compatible = "xlnx,afi-fpga";
-                config-afi = < 0 0>, <1 0>, <2 0>, <3 0>, <4 0>, <5 0>, <6 0>, <7 0>, <8 0>, <9 0>, <10 0>, <11 0>, <12 0>, <13 0>, <14 0xa00>, <15 0x000>;
-            };
-            clocking0: clocking0 {
-            #clock-cells = <0>;
-            assigned-clock-rates = <96968727>;
-            assigned-clocks = <&zynqmp_clk 71>;
-            clock-output-names = "fabric_clk";
-            clocks = <&zynqmp_clk 71>;
-            compatible = "xlnx,fclk";
-            };
-            clocking1: clocking1 {
-            #clock-cells = <0>;
-            assigned-clock-rates = <266664000>;
-            assigned-clocks = <&zynqmp_clk 72>;
-            clock-output-names = "fabric_clk";
-            clocks = <&zynqmp_clk 72>;
-            compatible = "xlnx,fclk";
-            };
-        };
-    };
+&fpga_full {
+	#address-cells = <2>;
+	#size-cells = <2>;
+	firmware-name = "vek280-a01.bit.bin";
+	pid = <0x0>;
+	resets = <&zynqmp_reset 116>;
+	uid = <0xd91b5b60>;
+};
 
-    fragment@2 {
-        target = <&amba>;
-        overlay2: __overlay__ {
-            #address-cells = <2>;
-            #size-cells = <2>;
-            axi_gpio_0: gpio@80020000 {
-                #gpio-cells = <2>;
-	        #interrupt-cells = <2>;
-                clock-names = "s_axi_aclk";
-                clocks = <&zynqmp_clk 71>;
-                compatible = "xlnx,axi-gpio-2.0", "xlnx,xps-gpio-1.00.a";
-                gpio-controller ;
-                interrupt-controller ;
-                interrupt-names = "ip2intc_irpt";
-                interrupt-parent = <&gic>;
-	        interrupts = <0 94 4>;
-                reg = <0x0 0x80020000 0x0 0x10000>;
-                xlnx,all-inputs = <0x0>;
-                xlnx,all-inputs-2 = <0x0>;
-                xlnx,all-outputs = <0x0>;
-                xlnx,all-outputs-2 = <0x0>;
-                xlnx,dout-default = <0x00000000>;
-	        xlnx,dout-default-2 = <0x00000000>;
-                xlnx,gpio-width = <0x12>;
-                xlnx,gpio2-width = <0x20>;
-	        xlnx,interrupt-present = <0x1>;
-                xlnx,is-dual = <0x0>;
-                xlnx,tri-default = <0xFFFFFFFF>;
-                xlnx,tri-default-2 = <0xFFFFFFFF>;
-	        gpio-line-names = "SYSCTLR_GPIO0", "SYSCTLR_GPIO1", "SYSCTLR_GPIO2",
-                "SYSCTLR_GPIO3", "SYSCTLR_GPIO4", "SYSCTLR_GPIO5",
-                "SYSCTLR_GPIO6", "SYSCTLR_GPIO7", "",
-                "", "", "",
-                "", "", "",
-                "", "SYSCTLR_IIC_MUX1_RESET_B",
-                "SYSCTLR_IIC_MUX0_RESET_B";
-            };
-            axi_gpio_1: gpio@80030000 {
-                #gpio-cells = <2>;
-                #interrupt-cells = <2>;
-                clock-names = "s_axi_aclk";
-                clocks = <&zynqmp_clk 71>;
-                compatible = "xlnx,axi-gpio-2.0", "xlnx,xps-gpio-1.00.a";
-                gpio-controller ;
-                interrupt-controller ;
-                interrupt-names = "ip2intc_irpt";
-                interrupt-parent = <&gic>;
-                interrupts = <0 96 4>;
-                reg = <0x0 0x80030000 0x0 0x10000>;
-                xlnx,all-inputs = <0x0>;
+&amba {
+	afi0: afi0 {
+		compatible = "xlnx,afi-fpga";
+		config-afi = < 0 0>, <1 0>, <2 0>, <3 0>, <4 0>, <5 0>, <6 0>, <7 0>, <8 0>, <9 0>, <10 0>, <11 0>, <12 0>, <13 0>, <14 0xa00>, <15 0x000>;
+	};
+	clocking0: clocking0 {
+		#clock-cells = <0>;
+		assigned-clock-rates = <96968727>;
+		assigned-clocks = <&zynqmp_clk 71>;
+		clock-output-names = "fabric_clk";
+		clocks = <&zynqmp_clk 71>;
+		compatible = "xlnx,fclk";
+	};
+	clocking1: clocking1 {
+		#clock-cells = <0>;
+		assigned-clock-rates = <266664000>;
+		assigned-clocks = <&zynqmp_clk 72>;
+		clock-output-names = "fabric_clk";
+		clocks = <&zynqmp_clk 72>;
+		compatible = "xlnx,fclk";
+	};
+};
+
+&amba {
+	#address-cells = <2>;
+	#size-cells = <2>;
+	axi_gpio_0: gpio@80020000 {
+		#gpio-cells = <2>;
+		#interrupt-cells = <2>;
+		clock-names = "s_axi_aclk";
+		clocks = <&zynqmp_clk 71>;
+		compatible = "xlnx,axi-gpio-2.0", "xlnx,xps-gpio-1.00.a";
+		gpio-controller ;
+		interrupt-controller ;
+		interrupt-names = "ip2intc_irpt";
+		interrupt-parent = <&gic>;
+		interrupts = <0 94 4>;
+		reg = <0x0 0x80020000 0x0 0x10000>;
+		xlnx,all-inputs = <0x0>;
 		xlnx,all-inputs-2 = <0x0>;
 		xlnx,all-outputs = <0x0>;
-                xlnx,all-outputs-2 = <0x0>;
-                xlnx,dout-default = <0x00000000>;
-                xlnx,dout-default-2 = <0x00000000>;
-                xlnx,gpio-width = <0x3>;
-                xlnx,gpio2-width = <0x20>;
-                xlnx,interrupt-present = <0x1>;
-                xlnx,is-dual = <0x0>;
-                xlnx,tri-default = <0xFFFFFFFF>;
-                xlnx,tri-default-2 = <0xFFFFFFFF>;
+		xlnx,all-outputs-2 = <0x0>;
+		xlnx,dout-default = <0x00000000>;
+		xlnx,dout-default-2 = <0x00000000>;
+		xlnx,gpio-width = <0x12>;
+		xlnx,gpio2-width = <0x20>;
+		xlnx,interrupt-present = <0x1>;
+		xlnx,is-dual = <0x0>;
+		xlnx,tri-default = <0xFFFFFFFF>;
+		xlnx,tri-default-2 = <0xFFFFFFFF>;
+		gpio-line-names = "SYSCTLR_GPIO0", "SYSCTLR_GPIO1", "SYSCTLR_GPIO2",
+		"SYSCTLR_GPIO3", "SYSCTLR_GPIO4", "SYSCTLR_GPIO5",
+		"SYSCTLR_GPIO6", "SYSCTLR_GPIO7", "",
+		"", "", "",
+		"", "", "",
+		"", "SYSCTLR_IIC_MUX1_RESET_B",
+		"SYSCTLR_IIC_MUX0_RESET_B";
+	};
+	axi_gpio_1: gpio@80030000 {
+		#gpio-cells = <2>;
+		#interrupt-cells = <2>;
+		clock-names = "s_axi_aclk";
+		clocks = <&zynqmp_clk 71>;
+		compatible = "xlnx,axi-gpio-2.0", "xlnx,xps-gpio-1.00.a";
+		gpio-controller ;
+		interrupt-controller ;
+		interrupt-names = "ip2intc_irpt";
+		interrupt-parent = <&gic>;
+		interrupts = <0 96 4>;
+		reg = <0x0 0x80030000 0x0 0x10000>;
+		xlnx,all-inputs = <0x0>;
+		xlnx,all-inputs-2 = <0x0>;
+		xlnx,all-outputs = <0x0>;
+		xlnx,all-outputs-2 = <0x0>;
+		xlnx,dout-default = <0x00000000>;
+		xlnx,dout-default-2 = <0x00000000>;
+		xlnx,gpio-width = <0x3>;
+		xlnx,gpio2-width = <0x20>;
+		xlnx,interrupt-present = <0x1>;
+		xlnx,is-dual = <0x0>;
+		xlnx,tri-default = <0xFFFFFFFF>;
+		xlnx,tri-default-2 = <0xFFFFFFFF>;
 		gpio-line-names = "PMBUS2_INA226_ALERT", "PMBUS1_INA226_ALERT",
-                "PMBUS_ALERT";
-            };
-            axi_gpio_2: gpio@80040000 {
-                #gpio-cells = <2>;
-                #interrupt-cells = <2>;
-                clock-names = "s_axi_aclk";
-                clocks = <&zynqmp_clk 71>;
-                compatible = "xlnx,axi-gpio-2.0", "xlnx,xps-gpio-1.00.a";
-                gpio-controller ;
-                interrupt-controller ;
-                interrupt-names = "ip2intc_irpt";
-                interrupt-parent = <&gic>;
-                interrupts = <0 95 4>;
-                reg = <0x0 0x80040000 0x0 0x10000>;
-                xlnx,all-inputs = <0x0>;
-                xlnx,all-inputs-2 = <0x0>;
-                xlnx,all-outputs = <0x0>;
-                xlnx,all-outputs-2 = <0x0>;
-                xlnx,dout-default = <0x00000000>;
-                xlnx,dout-default-2 = <0x00000000>;
-                xlnx,gpio-width = <0xd>;
-                xlnx,gpio2-width = <0x20>;
-                xlnx,interrupt-present = <0x1>;
-                xlnx,is-dual = <0x0>;
-                xlnx,tri-default = <0xFFFFFFFF>;
-                xlnx,tri-default-2 = <0xFFFFFFFF>;
-	        gpio-line-names = "SYSCTLR_JTAG_S1", "SYSCTLR_JTAG_S0",
-                "SYSCTLR_VERSAL_MODE3", "SYSCTLR_VERSAL_MODE2",
-                "SYSCTLR_VERSAL_MODE1", "SYSCTLR_VERSAL_MODE0",
-                "SYSCTLR_POR_B_LS", "SYSCTLR_VERSAL_MODE3_READBACK",
-                "SYSCTLR_VERSAL_MODE2_READBACK", "SYSCTLR_VERSAL_MODE1_READBACK",
-                "SYSCTLR_VERSAL_MODE0_READBACK", "SYSCTLR_VERSAL_POR_B_READBACK",
-                "VERSAL_ERROR_OUT_LS";
-           };
-            axi_iic_0: i2c@80050000 {
-                #address-cells = <1>;
-                #size-cells = <0>;
-                clock-names = "s_axi_aclk";
-                clocks = <&zynqmp_clk 71>;
-                compatible = "xlnx,axi-iic-2.1", "xlnx,xps-iic-2.00.a";
-                interrupt-names = "iic2intc_irpt";
-                interrupt-parent = <&gic>;
+		"PMBUS_ALERT";
+	};
+	axi_gpio_2: gpio@80040000 {
+		#gpio-cells = <2>;
+		#interrupt-cells = <2>;
+		clock-names = "s_axi_aclk";
+		clocks = <&zynqmp_clk 71>;
+		compatible = "xlnx,axi-gpio-2.0", "xlnx,xps-gpio-1.00.a";
+		gpio-controller ;
+		interrupt-controller ;
+		interrupt-names = "ip2intc_irpt";
+		interrupt-parent = <&gic>;
+		interrupts = <0 95 4>;
+		reg = <0x0 0x80040000 0x0 0x10000>;
+		xlnx,all-inputs = <0x0>;
+		xlnx,all-inputs-2 = <0x0>;
+		xlnx,all-outputs = <0x0>;
+		xlnx,gpio2-width = <0x20>;
+		xlnx,all-inputs-2 = <0x0>;
+		xlnx,all-outputs = <0x0>;
+		xlnx,all-outputs-2 = <0x0>;
+		xlnx,dout-default = <0x00000000>;
+		xlnx,dout-default-2 = <0x00000000>;
+		xlnx,gpio-width = <0xd>;
+		xlnx,gpio2-width = <0x20>;
+		xlnx,interrupt-present = <0x1>;
+		xlnx,is-dual = <0x0>;
+		xlnx,tri-default = <0xFFFFFFFF>;
+		xlnx,tri-default-2 = <0xFFFFFFFF>;
+		gpio-line-names = "SYSCTLR_JTAG_S1", "SYSCTLR_JTAG_S0",
+		"SYSCTLR_VERSAL_MODE3", "SYSCTLR_VERSAL_MODE2",
+		"SYSCTLR_VERSAL_MODE1", "SYSCTLR_VERSAL_MODE0",
+		"SYSCTLR_POR_B_LS", "SYSCTLR_VERSAL_MODE3_READBACK",
+		"SYSCTLR_VERSAL_MODE2_READBACK", "SYSCTLR_VERSAL_MODE1_READBACK",
+		"SYSCTLR_VERSAL_MODE0_READBACK", "SYSCTLR_VERSAL_POR_B_READBACK",
+		"VERSAL_ERROR_OUT_LS";
+	};
+	axi_iic_0: i2c@80050000 {
+		#address-cells = <1>;
+		#size-cells = <0>;
+		clock-names = "s_axi_aclk";
+		clocks = <&zynqmp_clk 71>;
+		compatible = "xlnx,axi-iic-2.1", "xlnx,xps-iic-2.00.a";
+		interrupt-names = "iic2intc_irpt";
+		interrupt-parent = <&gic>;
 		interrupts = <0 91 4>;
-                reg = <0x0 0x80050000 0x0 0x10000>;
-            };
-            axi_iic_1: i2c@80060000 {
+		reg = <0x0 0x80050000 0x0 0x10000>;
+	};
+	axi_iic_1: i2c@80060000 {
 		#address-cells = <1>;
 		#size-cells = <0>;
 		clock-names = "s_axi_aclk";
@@ -206,8 +201,8 @@
 				xlnx,name = "vp_vn";
 			};
 		};
-            };
-	    debug_bridge_0: debug_bridge@80010000 {
+	};
+	debug_bridge_0: debug_bridge@80010000 {
 		clock-names = "s_axi_aclk";
 		clocks = <&zynqmp_clk 71>;
 		compatible = "xlnx,debug-bridge-3.0", "generic-uio";
@@ -251,8 +246,8 @@
 		xlnx,xsdb-num-slaves = <0x0>;
 		xlnx,xvc-hw-id = <0x0001>;
 		xlnx,xvc-sw-id = <0x0001>;
-            };
-            fan_tach_0: fan_tach@80080000 {
+	};
+	fan_tach_0: fan_tach@80080000 {
 		clock-names = "clk";
 		clocks = <&zynqmp_clk 71>;
 		compatible = "xlnx,fan-tach-1.0";
@@ -260,8 +255,8 @@
 		interrupt-parent = <&gic>;
 		interrupts = <0 89 4 0 90 4>;
 		reg = <0x0 0x80080000 0x0 0x1000 0x0 0x80081000 0x0 0x1000 0x0 0x80082000 0x0 0x1000>;
-	    };
-	    hsdp_axi_bram_ctrl_1: axi_bram_ctrl@a0020000 {
+	};
+	hsdp_axi_bram_ctrl_1: axi_bram_ctrl@a0020000 {
 		clock-names = "s_axi_aclk";
 		clocks = <&zynqmp_clk 72>;
 		compatible = "xlnx,axi-bram-ctrl-4.1";
@@ -280,8 +275,8 @@
 		xlnx,s-axi-id-width = <0x1>;
 		xlnx,s-axi-supports-narrow-burst = <0x0>;
 		xlnx,single-port-bram = <0x1>;
-            };
-            hsdp_axi_dma_0: dma@a0000000 {
+	};
+	hsdp_axi_dma_0: dma@a0000000 {
 		#dma-cells = <1>;
 		clock-names = "s_axi_lite_aclk", "m_axi_sg_aclk", "m_axi_mm2s_aclk", "m_axi_s2mm_aclk";
 		clocks = <&zynqmp_clk 72>, <&zynqmp_clk 72>, <&zynqmp_clk 72>, <&zynqmp_clk 72>;
@@ -294,21 +289,21 @@
 		xlnx,include-sg ;
 		xlnx,sg-length-width = <0x1a>;
 		dma-channel@a0000000 {
-		    compatible = "xlnx,axi-dma-mm2s-channel";
+			compatible = "xlnx,axi-dma-mm2s-channel";
 		        dma-channels = <0x1>;
 			interrupts = <0 104 4>;
 			xlnx,datawidth = <0x80>;
 			xlnx,device-id = <0x0>;
 		};
 		dma-channel@a0000030 {
-		    compatible = "xlnx,axi-dma-s2mm-channel";
+			compatible = "xlnx,axi-dma-s2mm-channel";
 			dma-channels = <0x1>;
 		        interrupts = <0 105 4>;
 			xlnx,datawidth = <0x40>;
 			xlnx,device-id = <0x0>;
 		};
-	    };
-	    hsdp_hsdp_ctl_stat_regs: hsdp_ctl_v1_0@a0010000 {
+	};
+	hsdp_hsdp_ctl_stat_regs: hsdp_ctl_v1_0@a0010000 {
 		clock-names = "s00_axi_hsdp_aclk";
 		clocks = <&zynqmp_clk 72>;
 		compatible = "xlnx,hsdp-ctl-v1-0-1.0";
@@ -317,84 +312,83 @@
 		xlnx,s00-axi-hsdp-addr-width = <0x6>;
 		xlnx,s00-axi-hsdp-data-width = <0x20>;
 		xlnx,tlast-prog-width = <0x17>;
-	    };
-        };
-    };
+	};
+};
 
-     fragment@3 {
-        target-path = "/";
-        __overlay__ {
-	    versal_iio: versal {
+&{/} {
+	versal_iio: versal {
 		compatible = "iio-hwmon";
 		io-channels = <&sysmon 6>, <&sysmon 5>, <&sysmon 4>,
 			      <&sysmon 3>, <&sysmon 2>, <&sysmon 1>,
 			      <&sysmon 0>, <&sysmon 7>, <&sysmon 8>;
-		};
+	};
 
-            vc7_xin: vc7-xin {
+	vc7_xin: vc7-xin {
 		compatible = "fixed-clock";
 		#clock-cells = <0>;
 		clock-frequency = <50000000>;
-		};
+	};
 
-	    gtclk1_1: sys_clk_0 {
+	gtclk1_1: sys_clk_0 {
 		status = "okay";
 		compatible = "xlnx,fclk";
 		clocks = <&vc7 0>;
-	    };
+	};
 
-	    gtclk1_2: sys_clk_1 {
+	gtclk1_2: sys_clk_1 {
 		status = "okay";
 		compatible = "xlnx,fclk";
 		clocks = <&vc7 1>;
-	    };
+	};
 
-	    gtclk1_3: sys_clk_2 {
+	gtclk1_3: sys_clk_2 {
 		status = "okay";
 		compatible = "xlnx,fclk";
 		clocks = <&vc7 2>;
-	    };
+	};
 
-	    gtclk1_6: gtclk1_out6 {
+	gtclk1_6: gtclk1_out6 {
 		status = "okay";
 		compatible = "xlnx,fclk";
 		clocks = <&vc7 3>;
-	    };
+	};
 
-	    gtclk1_7: gtclk1_out7 {
+	gtclk1_7: gtclk1_out7 {
 		status = "okay";
 		compatible = "xlnx,fclk";
 		clocks = <&vc7 4>;
-	    };
+	};
 
-	    gtclk1_8: gtclk1_out8 {
+	gtclk1_8: gtclk1_out8 {
 		status = "okay";
 		compatible = "xlnx,fclk";
 		clocks = <&vc7 5>;
-	    };
+	};
 
-	    gtclk1_10: ps_ref_clk {
+	gtclk1_10: ps_ref_clk {
 		status = "okay";
 		compatible = "xlnx,fclk";
 		clocks = <&vc7 6>;
-	    };
+	};
 
-	    gtclk1_11: gtclk1_out11 {
+	gtclk1_11: gtclk1_out11 {
 		status = "okay";
 		compatible = "xlnx,fclk";
 		clocks = <&vc7 7>;
-	    };
-        };
-    };
+	};
+	gtclk1_11: gtclk1_out11 {
+		status = "okay";
+		compatible = "xlnx,fclk";
+		clocks = <&vc7 7>;
+	};
+};
 
-    fragment@4 {
-	target = <&i2c0>;
-        __overlay__ {
-            #address-cells = <1>;
-	    #size-cells = <0>;
+&i2c0{
+	#address-cells = <1>;
+	#size-cells = <0>;
 
-	    tca6416_u233: gpio@20 {
-                compatible = "ti,tca6416";
+	tca6416_u233: gpio@20 {
+		compatible = "ti,tca6416";
 		reg = <0x20>;
 		gpio-controller;
 		#gpio-cells = <2>;
@@ -402,190 +396,187 @@
 		"PMBUS2_INA226_ALERT", "", "", "",
 		"FMCP1_FMC_PRSNT_M2C_B", "", "FMCP1_FMCP_PRSNT_M2C_B", "",
 		"VCCINT_VRHOT_B", "8A34001_EXP_RST_B", "PMBUS_ALERT", "PMBUS1_INA226_ALERT";
-	    };
+	};
 
-            i2c-mux@74 {
+	i2c-mux@74 {
 		compatible = "nxp,pca9548";
 		#address-cells = <1>;
 		#size-cells = <0>;
 		reg = <0x74>;
 		pmbus_i2c: i2c@0 {
-		    #address-cells = <1>;
-	            #size-cells = <0>;
-		    reg = <0>;
-		    ir35215_46: pmic@46 {
-		        compatible = "infineon,ir35215";
-			reg = <0x46>;
-		    };
-		    irps5401_47: pmic5401@47 {
-	                compatible = "infineon,irps5401";
-			reg = <0x47>;
-		    };
-		    irps5401_48: pmic@48 {
-                        compatible = "infineon,irps5401";
-			reg = <0x48>;
-		    };
-		    ir38064_49: regulator@49 {
-			compatible = "infineon,ir38064";
-			reg = <0x49>;
-		    };
-		    irps5401_4c: pmic@4c {
-		        compatible = "infineon,irps5401";
-			reg = <0x4c>;
-		    };
-		    irps5401_4d: pmic@4d {
-			compatible = "infineon,irps5401";
-			reg = <0x4d>;
-		    };
-		    ir38060_4e: regulator@4e {
-			compatible = "infineon,ir38060";
-			reg = <0x4e>;
-		    };
+			#address-cells = <1>;
+			#size-cells = <0>;
+			reg = <0>;
+			ir35215_46: pmic@46 {
+				compatible = "infineon,ir35215";
+				reg = <0x46>;
+			};
+			irps5401_47: pmic5401@47 {
+				compatible = "infineon,irps5401";
+				reg = <0x47>;
+			};
+			irps5401_48: pmic@48 {
+				compatible = "infineon,irps5401";
+				reg = <0x48>;
+			};
+			ir38064_49: regulator@49 {
+				compatible = "infineon,ir38064";
+				reg = <0x49>;
+			};
+			irps5401_4c: pmic@4c {
+				compatible = "infineon,irps5401";
+				reg = <0x4c>;
+			};
+			irps5401_4d: pmic@4d {
+				compatible = "infineon,irps5401";
+				reg = <0x4d>;
+			};
+			ir38060_4e: regulator@4e {
+				compatible = "infineon,ir38060";
+				reg = <0x4e>;
+			};
 		};
 		pmbus1_ina226_i2c: i2c@1 {
-		    #address-cells = <1>;
-	            #size-cells = <0>;
-	            reg = <1>;
-		    vccint: ina226@40 {
-			compatible = "ti,ina226";
-			reg = <0x40>;
-			shunt-resistor = <500>;
-		    };
-		    vcc_soc: ina226@41 {
-			compatible = "ti,ina226";
-			reg = <0x41>;
-			shunt-resistor = <500>;
-		    };
-		    vcc_pmc: ina226@42 {
-			compatible = "ti,ina226";
-			reg = <0x42>;
-			shunt-resistor = <5000>;
-		    };
-		    vcc_ram: ina226@43 {
-			compatible = "ti,ina226";
-			reg = <0x43>;
-			shunt-resistor = <5000>;
-		    };
-		    vcc_pslp: ina226@44 {
-			compatible = "ti,ina226";
-			reg = <0x44>;
-			shunt-resistor = <5000>;
-		    };
-		    vcc_psfp: ina226@45 {
-			compatible = "ti,ina226";
-			reg = <0x45>;
-			shunt-resistor = <5000>;
-		    };
-		    vcco_hdio: ina226@46 {
-			compatible = "ti,ina226";
-			reg = <0x46>;
-			shunt-resistor = <5000>;
-		    };
+			#address-cells = <1>;
+			#size-cells = <0>;
+			reg = <1>;
+			vccint: ina226@40 {
+				compatible = "ti,ina226";
+				reg = <0x40>;
+				shunt-resistor = <500>;
+			};
+			vcc_soc: ina226@41 {
+				compatible = "ti,ina226";
+				reg = <0x41>;
+				shunt-resistor = <500>;
+			};
+			vcc_pmc: ina226@42 {
+				compatible = "ti,ina226";
+				reg = <0x42>;
+				shunt-resistor = <5000>;
+			};
+			vcc_ram: ina226@43 {
+				compatible = "ti,ina226";
+				reg = <0x43>;
+				shunt-resistor = <5000>;
+			};
+			vcc_pslp: ina226@44 {
+				compatible = "ti,ina226";
+				reg = <0x44>;
+				shunt-resistor = <5000>;
+			};
+			vcc_psfp: ina226@45 {
+				compatible = "ti,ina226";
+				reg = <0x45>;
+				shunt-resistor = <5000>;
+			};
+			vcco_hdio: ina226@46 {
+				compatible = "ti,ina226";
+				reg = <0x46>;
+				shunt-resistor = <5000>;
+			};
 		};
 		i2c@2 {
-		     #address-cells = <1>;
-		     #size-cells = <0>;
-		     reg = <2>;
+			#address-cells = <1>;
+			#size-cells = <0>;
+			reg = <2>;
 		};
 		pmbus2_ina226_i2c: i2c@3 {
-		    #address-cells = <1>;
-		    #size-cells = <0>;
-		    reg = <3>;
-		    vccaux: ina226@40 {
-		        compatible = "ti,ina226";
-			reg = <0x40>;
-			shunt-resistor = <5000>;
-		    };
-		    vccaux_pmc: ina226@41 {
-		        compatible = "ti,ina226";
-			reg = <0x41>;
-			shunt-resistor = <5000>;
-		    };
-		    mgtavcc: ina226@42 {
-		        compatible = "ti,ina226";
-			reg = <0x42>;
-		        shunt-resistor = <5000>;
-		    };
-		    vcc1v5: ina226@43 {
-			compatible = "ti,ina226";
-			reg = <0x43>;
-			shunt-resistor = <5000>;
-		    };
-		    vcco_mio: ina226@45 {
-			compatible = "ti,ina226";
-			reg = <0x45>;
-			shunt-resistor = <5000>;
-		    };
-		    mgtavtt: ina226@46 {
-		        compatible = "ti,ina226";
-			reg = <0x46>;
-			shunt-resistor = <500>;
-		    };
-		    vcco_502: ina226@47 {
-			compatible = "ti,ina226";
-			reg = <0x47>;
-			shunt-resistor = <5000>;
-		    };
-		    mgtvccaux: ina226@48 {
-			compatible = "ti,ina226";
-			reg = <0x48>;
-			shunt-resistor = <5000>;
-		    };
-		    vcc1v1_lp4: ina226@49 {
-			compatible = "ti,ina226";
-			reg = <0x49>;
-			shunt-resistor = <500>;
-		    };
-		    vadj_fmc: ina226@4a {
-			compatible = "ti,ina226";
-			reg = <0x4a>;
-			shunt-resistor = <5000>;
-		    };
-		    lpdmgtyavcc: ina226@4b {
-			compatible = "ti,ina226";
-			reg = <0x4b>;
-			shunt-resistor = <5000>;
-		    };
-		    lpdmgtyavtt: ina226@4c {
-			compatible = "ti,ina226";
-			reg = <0x4c>;
-			shunt-resistor = <5000>;
-		    };
-		    lpdmgtyvccaux: ina226@4d {
-			compatible = "ti,ina226";
-			reg = <0x4d>;
-			shunt-resistor = <5000>;
-		    };
+			#address-cells = <1>;
+			#size-cells = <0>;
+			reg = <3>;
+			vccaux: ina226@40 {
+				compatible = "ti,ina226";
+				reg = <0x40>;
+				shunt-resistor = <5000>;
+			};
+			vccaux_pmc: ina226@41 {
+				compatible = "ti,ina226";
+				reg = <0x41>;
+				shunt-resistor = <5000>;
+			};
+			mgtavcc: ina226@42 {
+				compatible = "ti,ina226";
+				reg = <0x42>;
+				shunt-resistor = <5000>;
+			};
+			vcc1v5: ina226@43 {
+				compatible = "ti,ina226";
+				reg = <0x43>;
+				shunt-resistor = <5000>;
+			};
+			vcco_mio: ina226@45 {
+				compatible = "ti,ina226";
+				reg = <0x45>;
+				shunt-resistor = <5000>;
+			};
+			mgtavtt: ina226@46 {
+				compatible = "ti,ina226";
+				reg = <0x46>;
+				shunt-resistor = <500>;
+			};
+			vcco_502: ina226@47 {
+				compatible = "ti,ina226";
+				reg = <0x47>;
+				shunt-resistor = <5000>;
+			};
+			mgtvccaux: ina226@48 {
+				compatible = "ti,ina226";
+				reg = <0x48>;
+				shunt-resistor = <5000>;
+			};
+			vcc1v1_lp4: ina226@49 {
+				compatible = "ti,ina226";
+				reg = <0x49>;
+				shunt-resistor = <500>;
+			};
+			vadj_fmc: ina226@4a {
+				compatible = "ti,ina226";
+				reg = <0x4a>;
+				shunt-resistor = <5000>;
+			};
+			lpdmgtyavcc: ina226@4b {
+				compatible = "ti,ina226";
+				reg = <0x4b>;
+				shunt-resistor = <5000>;
+			};
+			lpdmgtyavtt: ina226@4c {
+				compatible = "ti,ina226";
+				reg = <0x4c>;
+				shunt-resistor = <5000>;
+			};
+			lpdmgtyvccaux: ina226@4d {
+				compatible = "ti,ina226";
+				reg = <0x4d>;
+				shunt-resistor = <5000>;
+			};
 		};
 		i2c@4 {
-		    #address-cells = <1>;
-		    #size-cells = <0>;
-		    reg = <4>;
+			#address-cells = <1>;
+			#size-cells = <0>;
+			reg = <4>;
 	        };
 		rc21008a_gtclk1: i2c@5 {
-		    #address-cells = <1>;
-		    #size-cells = <0>;
-	            reg = <5>;
-		    vc7: clock-generator@9 {
-		        compatible = "renesas,rc21008a";
-			reg = <0x9>;
-			#clock-cells = <1>;
-			clocks = <&vc7_xin>;
-			clock-names = "xin";
-		    };
+			#address-cells = <1>;
+			#size-cells = <0>;
+			reg = <5>;
+			vc7: clock-generator@9 {
+				compatible = "renesas,rc21008a";
+				reg = <0x9>;
+				#clock-cells = <1>;
+				clocks = <&vc7_xin>;
+				clock-names = "xin";
+			};
 		};
 		fmcp1_iic: i2c@6 {
-		    #address-cells = <1>;
-		    #size-cells = <0>;
-		    reg = <6>;
+			#address-cells = <1>;
+			#size-cells = <0>;
+			reg = <6>;
 		};
 		sfp: i2c@7 {
-		    #address-cells = <1>;
-		    #size-cells = <0>;
-		    reg = <7>;
+			#address-cells = <1>;
+			#size-cells = <0>;
+			reg = <7>;
 		};
-	    };
 	};
-    };
-
 };
