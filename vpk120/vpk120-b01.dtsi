@@ -8,8 +8,47 @@
 
 /dts-v1/;
 /plugin/;
+&{/} {
 compatible = "xlnx,zynqmp-sc-vpk120-revB", "xlnx,zynqmp-vpk120-revB","xlnx,zynqmp-vpk120", "xlnx,zynqmp";
 
+	versal_iio: versal {
+		compatible = "iio-hwmon";
+		io-channels = <&sysmon 6>, <&sysmon 5>, <&sysmon 4>,
+			      <&sysmon 3>, <&sysmon 2>, <&sysmon 1>,
+			      <&sysmon 0>, <&sysmon 7>, <&sysmon 8>;
+	};
+
+	si570_user1_fmc_clk: si570_user1_fmc_clk {
+		status = "okay";
+		compatible = "xlnx,fclk";
+		clocks = <&user_si570_1>;
+	};
+
+	si570_ref_clk: si570_ref_clk {
+		status = "okay";
+		compatible = "xlnx,fclk";
+		clocks = <&ref_clk>;
+	};
+
+	si570_lpddr4_clk3: si570_lpddr4_clk3 {
+		status = "okay";
+		compatible = "xlnx,fclk";
+		clocks = <&lpddr4_clk3>;
+	};
+
+	si570_lpddr4_clk2: si570_lpddr4_clk2 {
+		status = "okay";
+		compatible = "xlnx,fclk";
+		clocks = <&lpddr4_clk2>;
+	};
+
+	si570_lpddr4_clk1: si570_lpddr4_clk1 {
+		status = "okay";
+		compatible = "xlnx,fclk";
+		clocks = <&lpddr4_clk1>;
+	};
+
+};
 &fpga_full {
 	#address-cells = <2>;
 	#size-cells = <2>;
@@ -17,10 +56,13 @@ compatible = "xlnx,zynqmp-sc-vpk120-revB", "xlnx,zynqmp-vpk120-revB","xlnx,zynqm
 	resets = <&zynqmp_reset 116>;
 };
 &amba {
+	#address-cells = <2>;
+	#size-cells = <2>;
 	afi0: afi0 {
 		compatible = "xlnx,afi-fpga";
 		config-afi = < 0 0>, <1 0>, <2 0>, <3 0>, <4 0>, <5 0>, <6 0>, <7 0>, <8 0>, <9 0>, <10 0>, <11 0>, <12 0>, <13 0>, <14 0xa00>, <15 0x000>;
 	};
+
 	clocking0: clocking0 {
 		#clock-cells = <0>;
 		assigned-clock-rates = <96968727>;
@@ -29,10 +71,6 @@ compatible = "xlnx,zynqmp-sc-vpk120-revB", "xlnx,zynqmp-vpk120-revB","xlnx,zynqm
 		clocks = <&zynqmp_clk 71>;
 		compatible = "xlnx,fclk";
 	};
-};
-&amba {
-	#address-cells = <2>;
-	#size-cells = <2>;
 	axi_gpio_0: gpio@80020000 {
 		#gpio-cells = <2>;
 		#interrupt-cells = <2>;
@@ -238,45 +276,6 @@ compatible = "xlnx,zynqmp-sc-vpk120-revB", "xlnx,zynqmp-vpk120-revB","xlnx,zynqm
 		reg = <0x0 0x80080000 0x0 0x1000 0x0 0x80081000 0x0 0x1000 0x0 0x80082000 0x0 0x1000>;
 	};
 };
-& {/} { 
-	versal_iio: versal {
-		compatible = "iio-hwmon";
-		io-channels = <&sysmon 6>, <&sysmon 5>, <&sysmon 4>,
-			      <&sysmon 3>, <&sysmon 2>, <&sysmon 1>,
-			      <&sysmon 0>, <&sysmon 7>, <&sysmon 8>;
-	};
-
-	si570_user1_fmc_clk: si570_user1_fmc_clk {
-		status = "okay";
-		compatible = "xlnx,fclk";
-		clocks = <&user_si570_1>;
-	};
-
-	si570_ref_clk: si570_ref_clk {
-		status = "okay";
-		compatible = "xlnx,fclk";
-		clocks = <&ref_clk>;
-	};
-
-	si570_lpddr4_clk3: si570_lpddr4_clk3 {
-		status = "okay";
-		compatible = "xlnx,fclk";
-		clocks = <&lpddr4_clk3>;
-	};
-
-	si570_lpddr4_clk2: si570_lpddr4_clk2 {
-		status = "okay";
-		compatible = "xlnx,fclk";
-		clocks = <&lpddr4_clk2>;
-	};
-
-	si570_lpddr4_clk1: si570_lpddr4_clk1 {
-		status = "okay";
-		compatible = "xlnx,fclk";
-		clocks = <&lpddr4_clk1>;
-	};
-};
-
 &i2c0 {
 	#address-cells = <1>;
 	#size-cells = <0>;
