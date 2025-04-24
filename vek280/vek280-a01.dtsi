@@ -404,6 +404,7 @@ compatible = "xlnx,zynqmp-sc-vek280-revA", "xlnx,zynqmp-vek280-revA",
 		#address-cells = <1>;
 		#size-cells = <0>;
 		reg = <0x74>;
+		i2c-mux-idle-disconnect;
 		pmbus_i2c: i2c@0 {
 			#address-cells = <1>;
 			#size-cells = <0>;
