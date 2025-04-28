@@ -25,6 +25,23 @@
 		/* This is kind of HACK but works properly based on design */
 		nvmem1 = "/axi/i2c@ff030000/i2c-arbitrator@72/i2c-arb/eeprom@54";
 	};
+
+	leds-um {
+		compatible = "gpio-leds";
+		um0-led {
+			label = "uartmuxsel0";
+			gpios = <&gpio 48 1>;
+			default-state = "off";
+		};
+
+		um1-led {
+			label = "uartmuxsel1";
+			gpios = <&gpio 49 1>;
+			default-state = "off";
+		};
+	};
+
+
 };
 
 &i2c0 { /* I2C_SCK C23/C24 - MIO 66/67 */
@@ -156,7 +173,6 @@
 						label = "eeprom_sit95211";
 						reg = <0x57>;
 					};
-
 				};
 				i2c@5 {
 					#address-cells = <1>;
