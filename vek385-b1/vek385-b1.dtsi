@@ -23,7 +23,7 @@
 
 	aliases {
 		/* This is kind of HACK but works properly based on design */
-		nvmem1 = "/axi/i2c@ff030000/i2c-arbitrator@72/i2c-arb@0/eeprom@54";
+		nvmem1 = "/axi/i2c@ff030000/i2c-arbitrator@72/i2c-arb/eeprom@54";
 	};
 
 	leds-um {
@@ -57,7 +57,7 @@
 		compatible = "nxp,pca9541";
 		reg = <0x72>;
 
-		i2c-arb@0 {
+		i2c-arb {
 			#address-cells = <1>;
 			#size-cells = <0>;
 
