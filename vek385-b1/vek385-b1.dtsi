@@ -256,7 +256,7 @@
 };
 
 &fpga_full {
-        firmware-name = "vek385-a01.bit.bin";
+        firmware-name = "vek385-b1.bin";
         resets = <&zynqmp_reset 116>;
         clocking0: clocking0 {
                 #clock-cells = <0>;
