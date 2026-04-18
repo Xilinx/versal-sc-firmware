@@ -12,9 +12,22 @@
 			      <&sysmon 2>, <&sysmon 1>, <&sysmon 0>,
 			      <&sysmon 6>, <&sysmon 7>;
 	};
+
+	leds-um {
+		compatible = "gpio-leds";
+		um0-led {
+			label = "uartmuxsel0";
+			gpios = <&gpio 48 0>;
+			default-state = "off";
+		};
+
+		um1-led {
+			label = "uartmuxsel1";
+			gpios = <&gpio 49 0>;
+			default-state = "off";
+		};
+	};
 };
-
-
 
 &fpga_full {
 	firmware-name = "scu200-a1.bin";
