@@ -1,0 +1,483 @@
+// SPDX-License-Identifier: GPL-2.0
+/*
+ * dts file for SC on VPK360 revA (k24)
+ *
+ * (C) Copyright 2026, Advanced Micro Devices, Inc.
+ *
+ * Michal Simek <michal.simek@amd.com>
+ */
+
+/dts-v1/;
+/plugin/;
+
+&{/} {
+	compatible = "xlnx,zynqmp-sc-vpk360-revA",
+		     "xlnx,zynqmp-sc-vpk360", "xlnx,zynqmp";
+	model = "ZynqMP SC VPK360 revA";
+
+	versal_iio: versal {
+		compatible = "iio-hwmon";
+		io-channels = <&sysmon 6>, <&sysmon 5>, <&sysmon 4>,
+				<&sysmon 3>, <&sysmon 2>, <&sysmon 1>,
+				<&sysmon 0>, <&sysmon 7>, <&sysmon 8>;
+	};
+
+	leds-um {
+		compatible = "gpio-leds";
+		um0-led {
+			label = "uartmuxsel0";
+			gpios = <&gpio 48 1>;
+			default-state = "off";
+		};
+
+		um1-led {
+			label = "uartmuxsel1";
+			gpios = <&gpio 49 1>;
+			default-state = "off";
+		};
+	};
+};
+
+&i2c0 { /* fmc_mux_i2c0 */
+	#address-cells = <1>;
+	#size-cells = <0>;
+
+	i2c_fmc: i2c-mux@73 { /* u676 */
+		compatible = "nxp,pca9543";
+		#address-cells = <1>;
+		#size-cells = <0>;
+		reg = <0x73>;
+
+		fmc_lpc_i2c: i2c@0 {
+			#address-cells = <1>;
+			#size-cells = <0>;
+			reg = <0>;
+		};
+
+		fmc_hpc_i2c: i2c@1 {
+			#address-cells = <1>;
+			#size-cells = <0>;
+			reg = <1>;
+		};
+	};
+};
+
+&i2c1 {
+	#address-cells = <1>;
+	#size-cells = <0>;
+	status = "okay";
+
+	tcal6408_imon: gpio@21 { /* u671 */
+		compatible = "ti,tcal6408";
+		reg = <0x21>;
+		gpio-controller; /* IRQ not connected */
+		#gpio-cells = <2>;
+		gpio-line-names = "pmbus_reg_alert", "imon_pmc_alert",
+				  "imon_lpd_alert", "imon_spd_alert",
+				  "imon_fpd_alert", "imon_pl_alert",
+				  "imon_lp5_alert", "8a34001_exp_rst_b";
+	};
+
+	i2c_mux: i2c-mux@71 { /* u685 */
+		compatible = "nxp,pca9848";
+		#address-cells = <1>;
+		#size-cells = <0>;
+		reg = <0x71>;
+
+		pmbus_i2c: i2c@0 {
+			#address-cells = <1>;
+			#size-cells = <0>;
+			reg = <0>;
+			/* 0x40 mpq72963 - u499 */
+			/* 0x3b mpq2285 - u653 */
+			/* 0x41 mpq72963 - u516 */
+			/* 0x1c mpq2283 - u655 */
+			/* 0x1 mpq2285 - u527 */
+			/* 0x2b mpq2283 - u529 */
+			/* 0x1f mpq2283 - u531 */
+			/* 0x22 mpq2285 - u533 */
+			/* 0x32 mpq2283 - u535 */
+			/* 0x39 mpq2283 - u537 */
+			/* 0x2d mpq2283 - u539 */
+			/* 0x34 mpq2285 - u541 */
+			/* 0x2a mpq2283 - u543 */
+			/* 0x17 mpq2283 - u545 */
+			/* 0x38 mpq2283 - u657 */
+			/* 0x2e mpq2287 - u547 */
+			/* 0x4 mpq2283 - u549 */
+		};
+		imon_pmc_i2c: i2c@1 {
+			#address-cells = <1>;
+			#size-cells = <0>;
+			reg = <1>;
+			/* 0x45 ina700 - u544 */
+			/* 0x47 ina700 - u546 */
+			/* 0x44 ina700 - u658 */
+		};
+		imon_lpd_i2c: i2c@2 {
+			#address-cells = <1>;
+			#size-cells = <0>;
+			reg = <2>;
+			/* 0x44 ina700 - u538 */
+			/* 0x45 ina700 - u540 */
+		};
+		imon_spd_i2c: i2c@3 {
+			#address-cells = <1>;
+			#size-cells = <0>;
+			reg = <3>;
+			/* 0x43 ina745 - u522 */
+			/* 0x45 ina700 - u530 */
+			/* 0x47 ina700 - u532 */
+			/* 0x44 ina700 - u534 */
+		};
+		imon_fpd_i2c: i2c@4 {
+			#address-cells = <1>;
+			#size-cells = <0>;
+			reg = <4>;
+			/* 0x45 ina700 - u654 */
+			/* 0x42 ina745 - u518 */
+			/* 0x43 ina745 - u524 */
+			/* 0x47 ina700 - u656 */
+			/* 0x44 ina700 - u536 */
+		};
+		imon_pl_i2c: i2c@5 {
+			#address-cells = <1>;
+			#size-cells = <0>;
+			reg = <5>;
+			/* 0x48 ina745 - u501 */
+			/* 0x49 ina745 - u503 */
+			/* 0x4a ina745 - u505 */
+			/* 0x4b ina745 - u507 */
+			/* 0x4c ina745 - u509 */
+			/* 0x4d ina745 - u511 */
+			/* 0x42 ina745 - u513 */
+			/* 0x43 ina745 - u515 */
+			/* 0x44 ina700 - u528 */
+			/* 0x45 ina700 - u542 */
+		};
+		imon_lp5_i2c: i2c@6 {
+			#address-cells = <1>;
+			#size-cells = <0>;
+			reg = <6>;
+			/* 0x44 ina700 - u548 */
+			/* 0x45 ina700 - u550 */
+		};
+		pwr_seq_i2c: i2c@7 {
+			#address-cells = <1>;
+			#size-cells = <0>;
+			reg = <7>;
+			/* 0x60 ucd9081 - u565 */
+			/* 0x61 ucd9081 - u568 */
+			/* 0x62 ucd9081 - u660 */
+			/* 0x64 ucd9081 - u571 */
+		};
+	};
+
+	i2c-mux@73 { /* u626 */
+		compatible = "nxp,pca9543";
+		#address-cells = <1>;
+		#size-cells = <0>;
+		reg = <0x73>;
+
+		rc31312_i2c: i2c@0 {
+			#address-cells = <1>;
+			#size-cells = <0>;
+			reg = <0>;
+			/* rc31312 - u637 */
+			/* rc19004a - u640 */
+		};
+
+		i2c_hub: i2c@1 {
+			#address-cells = <1>;
+			#size-cells = <0>;
+			reg = <1>;
+			hub: usb-hub@2d { /* u471 */
+				compatible = "microchip,usb5744";
+				reg = <0x2d>;
+			};
+		};
+	};
+};
+
+&eeprom_cc { /* u669 - m24128 16kB */
+	compatible = "st,24c128", "atmel,24c128";
+};
+
+&fpga_full {
+	firmware-name = "vpk360-a1.bin";
+	clocking0: clocking0 {
+		compatible = "xlnx,fclk";
+		status = "okay";
+		assigned-clocks = <&zynqmp_clk 71>;
+		assigned-clock-rates = <99999999>;
+		#clock-cells = <0>;
+		clock-output-names = "fabric_clk";
+		clocks = <&zynqmp_clk 71>;
+	};
+	afi0: afi0 {
+		status = "okay";
+		compatible = "xlnx,afi-fpga";
+		resets = <&zynqmp_reset 116>, <&zynqmp_reset 117>, <&zynqmp_reset 118>, <&zynqmp_reset 119>;
+		config-afi = < 0 0>, <1 0>, <2 0>, <3 0>, <4 0>, <5 0>, <6 0>, <7 0>, <8 0>, <9 0>, <10 0>, <11 0>, <12 0>, <13 0>, <14 0xa00>, <15 0x000>;
+	};
+};
+
+&amba {
+	ranges;
+	compatible = "simple-bus";
+	#address-cells = <2>;
+	#size-cells = <2>;
+	axi_gpio_sysctl: gpio@80020000 {
+		#interrupt-cells = <2>;
+		interrupts = < 0 94 4 >;
+		xlnx,gpio-board-interface = "Custom";
+		compatible = "xlnx,axi-gpio-2.0" , "xlnx,xps-gpio-1.00.a";
+		xlnx,all-outputs = <0>;
+		#gpio-cells = <2>;
+		xlnx,gpio-width = <17>;
+		interrupt-parent = <&gic>;
+		xlnx,dout-default = <0x8000>;
+		xlnx,is-dual = <0>;
+		xlnx,ip-name = "axi_gpio";
+		xlnx,tri-default-2 = <0xffffffff>;
+		reg = <0x0 0x80020000 0x0 0x10000>;
+		xlnx,all-inputs-2 = <0>;
+		clocks = <&zynqmp_clk 71>;
+		xlnx,all-outputs-2 = <0>;
+		gpio-controller;
+		xlnx,interrupt-present = <1>;
+		xlnx,gpio2-board-interface = "Custom";
+		xlnx,edk-iptype = "PERIPHERAL";
+		xlnx,dout-default-2 = <0x0>;
+		status = "okay";
+		xlnx,gpio2-width = <32>;
+		clock-names = "s_axi_aclk";
+		interrupt-controller;
+		interrupt-names = "ip2intc_irpt";
+		xlnx,tri-default = <0xffffefff>;
+		xlnx,name = "axi_gpio_sysctl";
+		xlnx,all-inputs = <0>;
+	};
+	axi_iic_qsfp1: i2c@80000000 {
+		interrupts = < 0 96 4 >;
+		xlnx,iic-freq-khz = <100>;
+		compatible = "xlnx,axi-iic-2.1" , "xlnx,xps-iic-2.00.a";
+		xlnx,scl-inertial-delay = <0>;
+		interrupt-parent = <&gic>;
+		xlnx,ip-name = "axi_iic";
+		xlnx,disable-setup-violation-check = <0>;
+		reg = <0x0 0x80000000 0x0 0x10000>;
+		clocks = <&zynqmp_clk 71>;
+		xlnx,gpo-width = <1>;
+		xlnx,s-axi-aclk-freq-hz = <0x5f5dd19>;
+		xlnx,edk-iptype = "PERIPHERAL";
+		xlnx,static-timing-reg-width = <0>;
+		xlnx,sda-level = <1>;
+		status = "okay";
+		clock-names = "s_axi_aclk";
+		xlnx,ten-bit-adr = <0>;
+		xlnx,default-value = <0x0>;
+		interrupt-names = "iic2intc_irpt";
+		xlnx,iic-board-interface = "Custom";
+		xlnx,timing-reg-width = <32>;
+		xlnx,iic-freq = <100000>;
+		xlnx,smbus-pmbus-host = <0>;
+		xlnx,name = "axi_iic_qsfp1";
+		xlnx,axi-aclk-freq-mhz = <0x5f5dd19>;
+		xlnx,sda-inertial-delay = <0>;
+	};
+	axi_iic_qsfp2: i2c@80030000 {
+		interrupts = < 0 95 4 >;
+		xlnx,iic-freq-khz = <100>;
+		compatible = "xlnx,axi-iic-2.1" , "xlnx,xps-iic-2.00.a";
+		xlnx,scl-inertial-delay = <0>;
+		interrupt-parent = <&gic>;
+		xlnx,ip-name = "axi_iic";
+		xlnx,disable-setup-violation-check = <0>;
+		reg = <0x0 0x80030000 0x0 0x10000>;
+		clocks = <&zynqmp_clk 71>;
+		xlnx,gpo-width = <1>;
+		xlnx,s-axi-aclk-freq-hz = <0x5f5dd19>;
+		xlnx,edk-iptype = "PERIPHERAL";
+		xlnx,static-timing-reg-width = <0>;
+		xlnx,sda-level = <1>;
+		status = "okay";
+		clock-names = "s_axi_aclk";
+		xlnx,ten-bit-adr = <0>;
+		xlnx,default-value = <0x0>;
+		interrupt-names = "iic2intc_irpt";
+		xlnx,iic-board-interface = "Custom";
+		xlnx,timing-reg-width = <32>;
+		xlnx,iic-freq = <100000>;
+		xlnx,smbus-pmbus-host = <0>;
+		xlnx,name = "axi_iic_qsfp2";
+		xlnx,axi-aclk-freq-mhz = <0x5f5dd19>;
+		xlnx,sda-inertial-delay = <0>;
+	};
+	axi_iic_sysmon: i2c@80060000 {
+		interrupts = < 0 93 4 >;
+		xlnx,iic-freq-khz = <100>;
+		compatible = "xlnx,axi-iic-2.1" , "xlnx,xps-iic-2.00.a";
+		xlnx,scl-inertial-delay = <0>;
+		interrupt-parent = <&gic>;
+		xlnx,ip-name = "axi_iic";
+		xlnx,disable-setup-violation-check = <0>;
+		reg = <0x0 0x80060000 0x0 0x10000>;
+		clocks = <&zynqmp_clk 71>;
+		xlnx,gpo-width = <1>;
+		xlnx,s-axi-aclk-freq-hz = <0x5f5dd19>;
+		xlnx,edk-iptype = "PERIPHERAL";
+		xlnx,static-timing-reg-width = <0>;
+		xlnx,sda-level = <1>;
+		status = "okay";
+		clock-names = "s_axi_aclk";
+		xlnx,ten-bit-adr = <0>;
+		xlnx,default-value = <0x0>;
+		interrupt-names = "iic2intc_irpt";
+		xlnx,iic-board-interface = "Custom";
+		xlnx,timing-reg-width = <32>;
+		xlnx,iic-freq = <100000>;
+		xlnx,smbus-pmbus-host = <0>;
+		xlnx,name = "axi_iic_sysmon";
+		xlnx,axi-aclk-freq-mhz = <0x5f5dd19>;
+		xlnx,sda-inertial-delay = <0>;
+
+		sysmon: i2c@18 {
+			#address-cells = <1>;
+			#size-cells = <0>;
+			compatible = "xlnx,versal-sysmon";
+			reg = <0x18>;
+			xlnx,numchannels = [07];
+			status = "okay";
+			#io-channel-cells = <1>;
+			supply@0 {
+				reg = <0>;
+				xlnx,name = "vccaux";
+			};
+			supply@1 {
+				reg = <1>;
+				xlnx,name = "vccaux_pmc";
+			};
+			supply@2 {
+				reg = <2>;
+				xlnx,name = "vcc_pmc";
+			};
+			supply@3 {
+				reg = <3>;
+				xlnx,name = "vcc_psfp";
+			};
+			supply@4 {
+				reg = <4>;
+				xlnx,name = "vcc_pslp";
+			};
+			supply@5 {
+				reg = <5>;
+				xlnx,name = "vcc_soc";
+			};
+			supply@6 {
+				reg = <6>;
+				xlnx,name = "vp_vn";
+			};
+		};
+	};
+	axi_uartlite_2: serial@80070000 {
+		interrupts = < 0 104 1 >;
+		compatible = "xlnx,axi-uartlite-2.0" , "xlnx,xps-uartlite-1.00.a";
+		xlnx,uartlite-board-interface = "Custom";
+		xlnx,s-axi-aclk-freq-hz-d = <0x5f5dd19>;
+		interrupt-parent = <&gic>;
+		xlnx,ip-name = "axi_uartlite";
+		reg = <0x0 0x80070000 0x0 0x10000>;
+		xlnx,baudrate = <115200>;
+		clocks = <&zynqmp_clk 71>;
+		current-speed = <115200>;
+		xlnx,use-parity = <0>;
+		xlnx,edk-iptype = "PERIPHERAL";
+		xlnx,odd-parity = <0>;
+		status = "okay";
+		clock-names = "s_axi_aclk";
+		interrupt-names = "interrupt";
+		xlnx,name = "axi_uartlite_2";
+		xlnx,data-bits = <8>;
+		xlnx,parity = "No_Parity";
+	};
+	axi_uartlite_3: serial@80050000 {
+		interrupts = < 0 91 1 >;
+		compatible = "xlnx,axi-uartlite-2.0" , "xlnx,xps-uartlite-1.00.a";
+		xlnx,uartlite-board-interface = "Custom";
+		xlnx,s-axi-aclk-freq-hz-d = <0x5f5dd19>;
+		interrupt-parent = <&gic>;
+		xlnx,ip-name = "axi_uartlite";
+		reg = <0x0 0x80050000 0x0 0x10000>;
+		xlnx,baudrate = <115200>;
+		clocks = <&zynqmp_clk 71>;
+		current-speed = <115200>;
+		xlnx,use-parity = <0>;
+		xlnx,edk-iptype = "PERIPHERAL";
+		xlnx,odd-parity = <0>;
+		status = "okay";
+		clock-names = "s_axi_aclk";
+		interrupt-names = "interrupt";
+		xlnx,name = "axi_uartlite_3";
+		xlnx,data-bits = <8>;
+		xlnx,parity = "No_Parity";
+	};
+	debug_bridge_0: debug_bridge@80010000 {
+		xlnx,xvc-sw-id = <0x1>;
+		xlnx,fifo-style = "SUBCORE";
+		compatible = "xlnx,debug-bridge-3.0" , "generic-uio";
+		xlnx,pcie-ext-cfg-next-ptr = <0x0>;
+		xlnx,num-bs-master = <0>;
+		xlnx,pcie-ext-cfg-vsec-id = <0x8>;
+		xlnx,major-version = <14>;
+		xlnx,bscan-mux = <1>;
+		xlnx,xvc-hw-id = <0x1>;
+		xlnx,device-family = <0>;
+		xlnx,dclk-has-reset = <0>;
+		xlnx,ip-name = "debug_bridge";
+		xlnx,ir-width = <0>;
+		reg = <0x0 0x80010000 0x0 0x10000>;
+		xlnx,core-minor-alpha-ver = <97>;
+		clocks = <&zynqmp_clk 71>;
+		xlnx,xsdb-num-slaves = <0>;
+		xlnx,en-int-sim = <1>;
+		xlnx,clk-input-freq-hz = <300000000>;
+		xlnx,ir-id-instr = <0>;
+		xlnx,edk-iptype = "PERIPHERAL";
+		xlnx,pcie-ext-cfg-base-addr = <0x400>;
+		xlnx,build-revision = <0>;
+		xlnx,use-softbscan = <1>;
+		xlnx,ir-user1-instr = <0>;
+		xlnx,core-minor-ver = <0>;
+		xlnx,pcie-ext-cfg-vsec-rev-id = <0x0>;
+		status = "okay";
+		xlnx,chip-id = <0>;
+		clock-names = "s_axi_aclk";
+		xlnx,use-ext-bscan;
+		xlnx,tck-clock-ratio = <8>;
+		xlnx,minor-version = <1>;
+		xlnx,en-passthrough = <0>;
+		xlnx,core-type = <1>;
+		xlnx,user-scan-chain = <1>;
+		xlnx,use-bufr = <0>;
+		xlnx,pcie-ext-cfg-vsec-length = <0x20>;
+		xlnx,master-intf-type = <1>;
+		xlnx,design-type = <0>;
+		xlnx,debug-mode = <3>;
+		xlnx,name = "debug_bridge_0";
+		xlnx,core-major-ver = <1>;
+	};
+	fan_tach_0: fan_tach@80080000 {
+		interrupt-parent = <&gic>;
+		interrupts = < 0 89 4 0 90 4 >;
+		compatible = "xlnx,fan-tach-1.0";
+		status = "okay";
+		clock-names = "clk";
+		xlnx,ip-name = "fan_tach";
+		interrupt-names = "interrupt_fan_fail" , "interrupt_pwm_det";
+		xlnx,edk-iptype = "PERIPHERAL";
+		reg = <0x0 0x80080000 0x0 0x1000 0x0 0x80081000 0x0 0x1000 0x0 0x80082000 0x0 0x1000>;
+		clocks = <&zynqmp_clk 71>;
+		xlnx,name = "fan_tach_0";
+	};
+};
