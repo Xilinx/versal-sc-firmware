@@ -234,7 +234,7 @@
 		compatible = "xlnx,axi-gpio-2.0" , "xlnx,xps-gpio-1.00.a";
 		xlnx,all-outputs = <0>;
 		#gpio-cells = <2>;
-		xlnx,gpio-width = <17>;
+		xlnx,gpio-width = <21>;
 		interrupt-parent = <&gic>;
 		xlnx,dout-default = <0x8000>;
 		xlnx,is-dual = <0>;
