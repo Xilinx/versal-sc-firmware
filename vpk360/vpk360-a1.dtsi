@@ -67,15 +67,31 @@
 	#size-cells = <0>;
 	status = "okay";
 
+	i2c-arbitrator@72 { /* u704 */
+		compatible = "nxp,pca9541";
+		reg = <0x72>;
+
+        i2c-arb {
+            #address-cells = <1>;
+            #size-cells = <0>;
+            /* board_i2c1 */
+
+			idt_8a34001: phc@59 { /* u219B */
+				compatible = "idt,8a34001";
+				reg = <0x59>;
+			};
+		};
+	};
+
 	tcal6408_imon: gpio@21 { /* u671 */
-		compatible = "ti,tcal6408";
+		compatible = "ti,tca6408";
 		reg = <0x21>;
 		gpio-controller; /* IRQ not connected */
 		#gpio-cells = <2>;
-		gpio-line-names = "pmbus_reg_alert", "imon_pmc_alert",
-				  "imon_lpd_alert", "imon_spd_alert",
-				  "imon_fpd_alert", "imon_pl_alert",
-				  "imon_lp5_alert", "8a34001_exp_rst_b";
+		gpio-line-names = "PMBUS_REG_ALERT", "IMON_PMC_ALERT",
+				  "IMON_LPD_ALERT", "IMON_SPD_ALERT",
+				  "IMON_FPD_ALERT", "IMON_PL_ALERT",
+				  "IMON_LP5_ALERT", "8A34001_EXP_RST_B";
 	};
 
 	i2c_mux: i2c-mux@71 { /* u685 */
@@ -245,6 +261,7 @@
 		clocks = <&zynqmp_clk 71>;
 		xlnx,all-outputs-2 = <0>;
 		gpio-controller;
+		device_type = "gpio";
 		xlnx,interrupt-present = <1>;
 		xlnx,gpio2-board-interface = "Custom";
 		xlnx,edk-iptype = "PERIPHERAL";
@@ -257,6 +274,13 @@
 		xlnx,tri-default = <0xffffefff>;
 		xlnx,name = "axi_gpio_sysctl";
 		xlnx,all-inputs = <0>;
+		gpio-line-names =
+			/*  0 -  3 */ "DPL_EN", "DSPD_EN", "DFPD_EN", "GPI6",
+			/*  4 -  7 */ "GPI7", "PCIE_RP_CLK_SEL", "GPI7", "GPI5",
+			/*  8 - 11 */ "EEPROM_WP", "GPO0", "CLK_GPO1", "PMC_EN",
+			/* 12 - 15 */ "GPO2", "GPO3", "DLPD_EN", "USB_MUX_SEL",
+			/* 16 - 19 */ "PCIE_EP_CLK_SEL", "FMC_HPC_PRSNT_M2C_B", "FMC_HPC_HSPC_PRSNT_M2C_B", "FMC_LPC_PRSNT_M2C_B",
+			/* 20 */ "FMC_LPC_HSPC_PRSNT_M2C_B";
 	};
 	axi_iic_qsfp1: i2c@80000000 {
 		interrupts = < 0 96 4 >;
@@ -285,6 +309,16 @@
 		xlnx,name = "axi_iic_qsfp1";
 		xlnx,axi-aclk-freq-mhz = <0x5f5dd19>;
 		xlnx,sda-inertial-delay = <0>;
+
+		tcal6408_qsfp1: gpio@20 { /* u672 */
+			compatible = "ti,tca6408";
+			reg = <0x20>;
+			gpio-controller; /* IRQ not connected */
+			#gpio-cells = <2>;
+				gpio-line-names =
+					/* 0 - 3 */ "QSFP1_MODSELL", "QSFP1_RESETL", "QSFP1_MODPRSL", "QSFP1_INTL",
+					/* 4 - 7 */ "QSFP1_INITMODE", "", "", "";
+		};
 	};
 	axi_iic_qsfp2: i2c@80030000 {
 		interrupts = < 0 95 4 >;
@@ -313,6 +347,16 @@
 		xlnx,name = "axi_iic_qsfp2";
 		xlnx,axi-aclk-freq-mhz = <0x5f5dd19>;
 		xlnx,sda-inertial-delay = <0>;
+
+		tcal6408_qsfp2: gpio@21 { /* u673 */
+			compatible = "ti,tca6408";
+			reg = <0x21>;
+			gpio-controller; /* IRQ not connected */
+			#gpio-cells = <2>;
+			gpio-line-names =
+				/* 0 - 3 */ "QSFP2_MODSELL", "QSFP2_RESETL", "QSFP2_MODPRSL", "QSFP2_INTL",
+				/* 4 - 7 */ "QSFP2_INITMODE", "", "", "";
+		};
 	};
 	axi_iic_sysmon: i2c@80060000 {
 		interrupts = < 0 93 4 >;
@@ -383,6 +427,7 @@
 	axi_uartlite_2: serial@80070000 {
 		interrupts = < 0 104 1 >;
 		compatible = "xlnx,axi-uartlite-2.0" , "xlnx,xps-uartlite-1.00.a";
+		port-number = <0>;
 		xlnx,uartlite-board-interface = "Custom";
 		xlnx,s-axi-aclk-freq-hz-d = <0x5f5dd19>;
 		interrupt-parent = <&gic>;
@@ -391,6 +436,7 @@
 		xlnx,baudrate = <115200>;
 		clocks = <&zynqmp_clk 71>;
 		current-speed = <115200>;
+		device_type = "serial";
 		xlnx,use-parity = <0>;
 		xlnx,edk-iptype = "PERIPHERAL";
 		xlnx,odd-parity = <0>;
@@ -404,6 +450,7 @@
 	axi_uartlite_3: serial@80050000 {
 		interrupts = < 0 91 1 >;
 		compatible = "xlnx,axi-uartlite-2.0" , "xlnx,xps-uartlite-1.00.a";
+		port-number = <0>;
 		xlnx,uartlite-board-interface = "Custom";
 		xlnx,s-axi-aclk-freq-hz-d = <0x5f5dd19>;
 		interrupt-parent = <&gic>;
@@ -412,6 +459,7 @@
 		xlnx,baudrate = <115200>;
 		clocks = <&zynqmp_clk 71>;
 		current-speed = <115200>;
+		device_type = "serial";
 		xlnx,use-parity = <0>;
 		xlnx,edk-iptype = "PERIPHERAL";
 		xlnx,odd-parity = <0>;
