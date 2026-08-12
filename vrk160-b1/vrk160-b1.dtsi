@@ -171,7 +171,7 @@
 
 					eeprom_u212: eeprom@57 { /* also at 0x5f */
 						compatible = "atmel,24c64";
-						label = "eeprom_cg2";
+						label = "eeprom_sit95314_u211";
 						reg = <0x57>;
 					};
 				};
@@ -183,7 +183,7 @@
 					/* u209 sit95314 0x69 - 4 outputs */
 					eeprom_u210: eeprom@57 { /* also at 0x5f */
 						compatible = "atmel,24c64";
-						label = "eeprom_cg1";
+						label = "eeprom_sit95314_u209";
 						reg = <0x57>;
 					};
 				};
