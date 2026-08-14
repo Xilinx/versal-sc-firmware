@@ -87,10 +87,10 @@
 		xlnx,name = "axi_gpio_0";
 		xlnx,all-inputs = <0>;
 		gpio-line-names =
-			/*  0 -  3 */ "SYS_PGOOD", "FMC_PRSNT_M2C_LT", "", "SYSCTLR_GPI6",
-			/*  4 -  7 */ "SYSCTLR_GPI7", "", "SYSCTLR_GPI4", "SYSCTLR_GPI5",
-			/*  8 - 11 */ "EEPROM_WP", "SYSCTLR_GPO0", "SYSCTLR_CLK_GPO1", "",
-			/* 12 - 15 */ "SYSCTLR_GPO2", "SYSCTLR_GPO3", "DUT_PWR_EN", "";
+			/*  0 -  3 */ "SYS_PGOOD", "FMC_PRSNT_M2C_LT", "", "SYSCTRL_GPI6",
+			/*  4 -  7 */ "SYSCTRL_GPI7", "", "SYSCTRL_GPI4", "SYSCTRL_GPI5",
+			/*  8 - 11 */ "EEPROM_WP", "SYSCTRL_GPO0", "SYSCTRL_GPO1", "",
+			/* 12 - 15 */ "SYSCTRL_GPO2", "SYSCTRL_GPO3", "DUT_PWR_EN", "";
 	};
 	axi_iic_sfp_0: i2c@80000000 {
 		interrupts = < 0 96 4 >;

@@ -293,10 +293,10 @@
 		xlnx,tri-default = <0xFFFFFFFF>;
 		xlnx,tri-default-2 = <0xFFFFFFFF>;
 		gpio-line-names =
-		/*  0 -  3 */ "DPL_EN", "DSYSTEM_EN", "DPFD_EN", "GPI6",
-		/*  4 -  7 */ "GPI7", "SFP_MUX_RST_B", "GPI4", "GPI5",
-		/*  8 - 11 */ "EEPROM_WP", "GPO0", "CLK_GPO1", "DAIE_EN",
-		/* 12 - 15 */ "GPO2", "GPO3", "DLPD_EN", "USB_MUX_SEL",
+		/*  0 -  3 */ "DPL_EN", "DSYSTEM_EN", "DPFD_EN", "SYSCTRL_GPI6",
+		/*  4 -  7 */ "SYSCTRL_GPI7", "SFP_MUX_RST_B", "SYSCTRL_GPI4", "SYSCTRL_GPI5",
+		/*  8 - 11 */ "EEPROM_WP", "SYSCTRL_GPO0", "SYSCTRL_GPO1", "DAIE_EN",
+		/* 12 - 15 */ "SYSCTRL_GPO2", "SYSCTRL_GPO3", "DLPD_EN", "USB_MUX_SEL",
 		/* 16 - 18 */ "PCIE_CLK_SEL", "EFM8BB_RSTB_C2CK", "EFM8_C2D";
 
 	};

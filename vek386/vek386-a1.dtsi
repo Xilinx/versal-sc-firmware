@@ -319,6 +319,14 @@
 		xlnx,tri-default = <0xffffffff>;
 		xlnx,name = "axi_gpio_1";
 		xlnx,all-inputs = <0>;
+		gpio-line-names =
+			/*  0 -  3 */ "", "", "SYSCTRL_GPI6", "SYSCTRL_GPI7",
+			/*  4 -  7 */ "", "", "", "",
+			/*  8 - 11 */ "SYSCTRL_GPI4", "SYSCTRL_GPI5", "CC_EEPROM_WP", "SYSCTRL_GPO0",
+			/* 12 - 15 */ "SYSCTRL_GPO1", "", "", "",
+			/* 16 - 19 */ "SYSCTRL_GPO2", "SYSCTRL_GPO3", "", "",
+			/* 20 - 23 */ "", "", "", "",
+			/* 24 - 25 */ "", "";
 	};
 	axi_gpio_2: gpio@80040000 {
 		#interrupt-cells = <2>;
