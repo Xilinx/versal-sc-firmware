@@ -8,9 +8,8 @@
 
 	versal_iio: versal {
 		compatible = "iio-hwmon";
-		io-channels = <&sysmon 5>, <&sysmon 4>, <&sysmon 3>,
-			      <&sysmon 2>, <&sysmon 1>, <&sysmon 0>,
-			      <&sysmon 6>, <&sysmon 7>;
+		io-channels = <&sysmon 0>, <&sysmon 1>, <&sysmon 2>,
+			      <&sysmon 3>, <&sysmon 7>, <&sysmon 8>;
 	};
 
 	leds-um {
