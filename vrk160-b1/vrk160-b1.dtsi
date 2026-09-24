@@ -394,7 +394,7 @@
 			#size-cells = <0>;
 			compatible = "xlnx,versal-sysmon";
 			reg = <0x18>;
-			xlnx,numchannels = [07];
+			xlnx,numchannels = [09];
 			status = "okay";
 			#io-channel-cells = <1>;
 			supply@0 {
@@ -424,6 +424,14 @@
 			supply@6 {
 				reg = <6>;
 				xlnx,name = "vp_vn";
+			};
+			supply@7 {
+				reg = <7>;
+				xlnx,name = "vcc_ram";
+			};
+			supply@8 {
+				reg = <8>;
+				xlnx,name = "vccint";
 			};
 		};
 	};
