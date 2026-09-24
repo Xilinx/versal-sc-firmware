@@ -18,7 +18,7 @@
 		compatible = "iio-hwmon";
 		io-channels = <&sysmon 6>, <&sysmon 5>, <&sysmon 4>,
 			      <&sysmon 3>, <&sysmon 2>, <&sysmon 1>,
-			      <&sysmon 0>, <&sysmon 7>, <&sysmon 8>;
+			      <&sysmon 0>, <&sysmon 7>, <&sysmon 8>, <&sysmon 9>;
 	};
 
 	aliases {
@@ -381,39 +381,51 @@
 			#size-cells = <0>;
 			compatible = "xlnx,versal-sysmon";
 			reg = <0x18>;
-			xlnx,numchannels = [07];
+			xlnx,numchannels = [10];
 			status = "okay";
 			#io-channel-cells = <1>;
-			supply@0 {
-				reg = <0>;
+			supply@32 {
+				reg = <32>;
 				xlnx,name = "vccaux";
 			};
-			supply@1 {
-				reg = <1>;
+			supply@33 {
+				reg = <33>;
 				xlnx,name = "vccaux_pmc";
 			};
-			supply@2 {
-				reg = <2>;
+			supply@34 {
+				reg = <34>;
 				xlnx,name = "vcc_pmc";
 			};
-			supply@3 {
-				reg = <3>;
+			supply@35 {
+				reg = <35>;
 				xlnx,name = "vcc_psfp";
 			};
-			supply@4 {
-				reg = <4>;
+			supply@36 {
+				reg = <36>;
 				xlnx,name = "vcc_pslp";
 			};
-			supply@5 {
-				reg = <5>;
+			supply@37 {
+				reg = <37>;
 				xlnx,name = "vcc_soc";
 			};
-			supply@6 {
-				reg = <6>;
+			supply@38 {
+				reg = <38>;
 				xlnx,name = "vp_vn";
 			};
+			supply@39 {
+				reg = <39>;
+				xlnx,name = "vccint";
+			};
+			supply@40 {
+				reg = <40>;
+				xlnx,name = "vccint_mmi_mmi";
+			};
+			supply@41 {
+				reg = <41>;
+				xlnx,name = "vcc_ram";
+			};
 		};
-        };
+	};
         axi_uartlite_0: serial@80070000 {
                 clock-names = "s_axi_aclk";
                 clocks = <&zynqmp_clk 71>;
