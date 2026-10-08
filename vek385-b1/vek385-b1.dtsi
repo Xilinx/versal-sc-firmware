@@ -503,16 +503,15 @@
                 interrupts = <0 89 4 0 90 4>;
                 reg = <0x0 0x80080000 0x0 0x1000 0x0 0x80081000 0x0 0x1000 0x0 0x80082000 0x0 0x1000>;
         };
-        jtag_clock: jtag_clock@80000000 {
-                compatible = "generic-uio";
+        jtag_controller_0: jtag_controller@80000000 {
+                compatible = "xlnx,jtag-controller-1.0";
                 status = "okay";
-                reg = <0x0 0x80000000 0x0 0x10000>;
-                xlnx,name = "jtag_clock";
-        };
-        jtag_ctl: jtag_ctl@80010000 {
-                compatible = "generic-uio";
-                status = "okay";
-                reg = <0x0 0x80010000 0x0 0x10000>;
-                xlnx,name = "jtag_ctl";
+                clock-names = "ACLK" , "S_AXI_0_ACLK" , "clock_in";
+                xlnx,ip-name = "jtag_controller";
+                xlnx,edk-iptype = "PERIPHERAL";
+                xlnx,num-jtag-ports = <1>;
+                reg = <0x0 0x80000000 0x0 0x10000 0x0 0x80010000 0x0 0x10000>;
+                clocks = <&misc_clk_0>, <&zynqmp_clk 71>, <&zynqmp_clk 71>;
+                xlnx,name = "jtag_controller_0";
         };
 };
