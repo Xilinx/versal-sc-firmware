@@ -18,7 +18,8 @@
 		compatible = "iio-hwmon";
 		io-channels = <&sysmon 6>, <&sysmon 5>, <&sysmon 4>,
 			      <&sysmon 3>, <&sysmon 2>, <&sysmon 1>,
-			      <&sysmon 0>, <&sysmon 7>, <&sysmon 8>, <&sysmon 9>;
+			      <&sysmon 0>, <&sysmon 7>, <&sysmon 8>,
+			      <&sysmon 9>, <&sysmon 10>, <&sysmon 11>;
 	};
 
 	aliases {
@@ -381,7 +382,7 @@
 			#size-cells = <0>;
 			compatible = "xlnx,versal-sysmon";
 			reg = <0x18>;
-			xlnx,numchannels = [10];
+			xlnx,numchannels = [0a];
 			status = "okay";
 			#io-channel-cells = <1>;
 			supply@32 {
