@@ -1,0 +1,531 @@
+// SPDX-License-Identifier: GPL-2.0
+/*
+ * dts file for SC on VMK365 (k24)
+ *
+ * (C) Copyright 2026, Advanced Micro Devices, Inc.
+ *
+ */
+
+/dts-v1/;
+/plugin/;
+
+&{/} {
+	compatible = "xlnx,zynqmp-sc-vmk365", "xlnx,zynqmp";
+	model = "ZynqMP SC VMK365";
+
+	versal_iio: versal {
+		compatible = "iio-hwmon";
+		io-channels = <&sysmon 6>, <&sysmon 5>, <&sysmon 4>,
+				<&sysmon 3>, <&sysmon 2>, <&sysmon 1>,
+				<&sysmon 0>, <&sysmon 7>, <&sysmon 8>, <&sysmon 9>;
+	};
+
+	leds-um {
+		compatible = "gpio-leds";
+		um0-led {
+			label = "uartmuxsel0";
+			gpios = <&gpio 48 1>;
+			default-state = "off";
+		};
+
+		um1-led {
+			label = "uartmuxsel1";
+			gpios = <&gpio 49 1>;
+			default-state = "off";
+		};
+	};
+};
+
+&{/} {
+	/*
+	 * BOARD_I2C0/1 are shared with the DUT through level translators
+	 * (U31/U32, U33/U34). MIO65/MIO73 select the owner: 0 = SC, 1 = DUT.
+	 * No arbitration exists, so the bus is handed back to the DUT when idle.
+	 */
+	board_i2c0_sel: i2c-mux-board-i2c0 {
+		compatible = "i2c-mux-gpio";
+		i2c-parent = <&i2c0>;
+		mux-gpios = <&gpio 65 0>; /* MIO65 - I2C0_SW_SEL */
+		idle-state = <1>;
+		settle-time-us = <1000>;
+		#address-cells = <1>;
+		#size-cells = <0>;
+
+		board_i2c0: i2c@0 { /* FMC/J13  - MIO66/67 - board_i2c0 */
+			reg = <0>;
+			#address-cells = <1>;
+			#size-cells = <0>;
+
+			tca6416_u266: gpio@21 { /* u266 */
+				compatible = "ti,tca6416";
+				reg = <0x21>;
+				gpio-controller; /* interrupt on MIO69 */
+				#gpio-cells = <2>;
+				gpio-line-names = "QSFP_MODSELL", "QSFP_RESETL", "QSFP_MODPRSL", "QSFP_INTL", /* 0 - 3 */
+						  "QSFP_LPMODE", "", "", "", /* 4 - 7 */
+						  "", "", "", "", /* 10 - 13 */
+						  "", "", "", ""; /* 14 - 17 */
+			};
+
+			tca9535_u362: gpio@26 { /* u362 */
+				compatible = "ti,tca9535";
+				reg = <0x26>;
+				gpio-controller; /* interrupt on MIO69 */
+				#gpio-cells = <2>;
+				gpio-line-names = "SFP28_P0_TX_FAULT", "SFP28_P0_RX_LOS", "SFP28_P0_MOD_ABS", "SFP28_P0_TX_DISABLE", /* 0 - 3 */
+						  "SFP28_P0_RS0_R", "SFP28_P0_RS1_R", "", "", /* 4 - 7 */
+						  "SFP28_P1_TX_FAULT", "SFP28_P1_RX_LOS", "SFP28_P1_MOD_ABS", "SFP28_P1_TX_DISABLE", /* 10 - 13 */
+						  "SFP28_P1_RS0_R", "SFP28_P1_RS1_R", "", ""; /* 14 - 17 */
+			};
+
+			tca9535_u363: gpio@27 { /* u363 */
+				compatible = "ti,tca9535";
+				reg = <0x27>;
+				gpio-controller; /* interrupt on MIO69 */
+				#gpio-cells = <2>;
+				gpio-line-names = "SFP28_P2_TX_FAULT", "SFP28_P2_RX_LOS", "SFP28_P2_MOD_ABS", "SFP28_P2_TX_DISABLE", /* 0 - 3 */
+						  "SFP28_P2_RS0_R", "SFP28_P2_RS1_R", "", "", /* 4 - 7 */
+						  "SFP28_P3_TX_FAULT", "SFP28_P3_RX_LOS", "SFP28_P3_MOD_ABS", "SFP28_P3_TX_DISABLE", /* 10 - 13 */
+						  "SFP28_P3_RS0_R", "SFP28_P3_RS1_R", "", ""; /* 14 - 17 */
+			};
+
+			i2c0_mux_71: i2c-mux@71 { /* u411 */
+				compatible = "nxp,pca9548";
+				#address-cells = <1>;
+				#size-cells = <0>;
+				reg = <0x71>;
+				i2c-mux-idle-disconnect;
+				qsfp: i2c@0 {
+					#address-cells = <1>;
+					#size-cells = <0>;
+					reg = <0>;
+				};
+				sfp28_p0: i2c@1 {
+					#address-cells = <1>;
+					#size-cells = <0>;
+					reg = <1>;
+				};
+				sfp28_p1: i2c@2 {
+					#address-cells = <1>;
+					#size-cells = <0>;
+					reg = <2>;
+				};
+				sfp28_p2: i2c@3 {
+					#address-cells = <1>;
+					#size-cells = <0>;
+					reg = <3>;
+				};
+				sfp28_p3: i2c@4 {
+					#address-cells = <1>;
+					#size-cells = <0>;
+					reg = <4>;
+				};
+				/* 5 - 7 unused */
+			};
+		};
+	};
+
+	board_i2c1_sel: i2c-mux-board-i2c1 {
+		compatible = "i2c-mux-gpio";
+		i2c-parent = <&i2c1>;
+		mux-gpios = <&gpio 73 0>; /* MIO73 - I2C1_SW_SEL */
+		idle-state = <1>;
+		settle-time-us = <1000>;
+		#address-cells = <1>;
+		#size-cells = <0>;
+
+		board_i2c1: i2c@0 { /* board_i2c1 */
+			reg = <0>;
+			#address-cells = <1>;
+			#size-cells = <0>;
+
+			tca6416_u37: gpio@21 { /* u37 */
+				compatible = "ti,tca6416";
+				reg = <0x21>;
+				gpio-controller; /* interrupt on MIO69 */
+				#gpio-cells = <2>;
+				gpio-line-names = "USB2_USB3_MUX_SEL", "PMBUS5_INA_ALERT", "PMBUS4_INA_ALERT", "PMBUS3_INA_ALERT", /* 0 - 3 */
+						  "PMBUS2_INA_ALERT", "PMBUS1_INA_ALERT", "PMBUS1_ALERT", "", /* 4 - 7 */
+						  "USB_FLEX_STATUS", "USB_P1_HOST_DET", "USB_ID_OTG_MODE", "", /* 10 - 13 */
+						  "", "", "", ""; /* 14 - 17 */
+			};
+
+			i2c_mux_71: i2c-mux@71 { /* u162 */
+				compatible = "nxp,pca9548";
+				#address-cells = <1>;
+				#size-cells = <0>;
+				reg = <0x71>;
+				i2c-mux-idle-disconnect;
+				pmbus1: i2c@0 {
+					#address-cells = <1>;
+					#size-cells = <0>;
+					reg = <0>;
+					/* pmbus1 */
+					/* J1 connector */
+					/* u176 mpq2285 0x1d */
+					/* u219 mpq72963 0x22 */
+					/* u220 mpq72963 0x23 */
+					/* u320 mpq70170 0x24 */
+					/* u328 mpq70170 0x25 */
+				};
+				pmbus2: i2c@1 {
+					#address-cells = <1>;
+					#size-cells = <0>;
+					reg = <1>;
+					/* pmbus2 */
+					/* J166 connector */
+					/* u205 mpq2285 0x1 */
+					/* u189 mpq2285 0x3 */
+					/* u190 mpq2283 0x4 */
+					/* u206 mpq2283 0x1b */
+					/* u207 mpq2283 0x1c */
+				};
+				pmbus1_ina: i2c@2 {
+					#address-cells = <1>;
+					#size-cells = <0>;
+					reg = <2>;
+					/* u282 ina745a 0x40 vr_0v8_vcc_fpd_bus */
+					/* u318 ina745a 0x41 vr_0v8_vcc_soc_io_bus */
+					/* u319 ina700a 0x44 vr_0v88_vcc_lpd_bus */
+					/* u324 ina700a 0x45 vr_1v5_vccaux_lpd_bus */
+					/* u321 ina700a 0x46 vr_1v8_vcco_50x_bus */
+					/* u322 ina700a 0x47 vr_0v8_vcc_mipi_507_bus */
+					/* u64 ina745a 0x48 vr_0v8_vccint_bus1 */
+					/* u275 ina745a 0x49 vr_0v8_vccint_bus2 */
+					/* u276 ina745a 0x4a vr_0v8_vccint_bus3 */
+				};
+				pmbus2_ina: i2c@3 {
+					#address-cells = <1>;
+					#size-cells = <0>;
+					reg = <3>;
+					/* u327 ina700a 0x44 vr_1v8_vccaio_mipi_507 */
+					/* u329 ina700a 0x45 vr_3v3_vccio_usb2_505 */
+					/* u288 ina700a 0x46 vr_1v5_vccaux */
+					/* u416 ina700a 0x47 vr_0v8_vcc_paux_505 */
+				};
+				pmbus3_ina: i2c@4 {
+					#address-cells = <1>;
+					#size-cells = <0>;
+					reg = <4>;
+					/* u290 ina700a 0x44 vr_3v3_vcco_4xx */
+					/* u291 ina700a 0x45 vr_1v5_gtyp_avccaux */
+					/* u292 ina700a 0x46 vr_1v2_gtyp_avtt */
+					/* u295 ina700a 0x47 vr_1v0_vcco_7xx_lp5 */
+				};
+				pmbus4_ina: i2c@5 {
+					#address-cells = <1>;
+					#size-cells = <0>;
+					reg = <5>;
+					/* u293 ina700a 0x44 vr_0v8_vcc_mmd */
+					/* u331 ina700a 0x45 vr_0v8_vcc_ram */
+					/* u330 ina700a 0x46 vr_0v92_gtyp_avcc */
+					/* u414 ina700a 0x47 vr_1v8_vccio_paux_505 */
+				};
+				pmbus5_ina: i2c@6 {
+					#address-cells = <1>;
+					#size-cells = <0>;
+					reg = <6>;
+					/* u325 ina700a 0x44 vr_0v92_gtyp_mmi_avcc */
+					/* u326 ina700a 0x45 vr_1v5_gtyp_mmi_avccaux */
+					/* u323 ina700a 0x46 vr_1v2_gtyp_mmi_avtt */
+					/* u415 ina700a 0x47 vr_1v8_vccio_usb3_505 */
+				};
+				pmbus_seq: i2c@7 {
+					#address-cells = <1>;
+					#size-cells = <0>;
+					reg = <7>;
+					/* u338 ucd90320 0x73 */
+				};
+			};
+
+			i2c_mux_77: i2c-mux@77 { /* u253 */
+				compatible = "nxp,pca9548";
+				#address-cells = <1>;
+				#size-cells = <0>;
+				reg = <0x77>;
+				i2c-mux-idle-disconnect;
+				clkgen_sit95211: i2c@0 {
+					#address-cells = <1>;
+					#size-cells = <0>;
+					reg = <0>;
+					/* clock-generator@0x69 - u101 */
+					eeprom_u166: eeprom@57 { /* u166 - required by spec - also at address 0x5F */
+						compatible = "atmel,24c64";
+						label = "eeprom_sit95211";
+						reg = <0x57>;
+					};
+				};
+				usbdp: i2c@2 {
+					#address-cells = <1>;
+					#size-cells = <0>;
+					reg = <2>;
+					/* u272 tps66993 */
+				};
+				i2c_10g_aqr: i2c@3 {
+					#address-cells = <1>;
+					#size-cells = <0>;
+					reg = <3>;
+					/* u389 - aqr113c */
+				};
+				usb0_hub: i2c@4 {
+					#address-cells = <1>;
+					#size-cells = <0>;
+					reg = <4>;
+					/* u398 - DNP usb5734@74 */
+				};
+				/* 1, 5 - 7 not connected */
+			};
+		};
+	};
+};
+
+&i2c1 { /* MIO24/25 - sysctrl_i2c1 */
+	#address-cells = <1>;
+	#size-cells = <0>;
+	status = "okay";
+
+	/* SC side of the MIO73 switch; board_i2c1 devices are under board_i2c1_sel */
+	/* slg7xl46528: gpio@10/11 u169 - reset logic */
+	/* m24c128 - eeprom u35 - board identification */
+};
+
+&fpga_full {
+	firmware-name = "vmk365-01.bin";
+	clocking0: clocking0 {
+		compatible = "xlnx,fclk";
+		status = "okay";
+		assigned-clocks = <&zynqmp_clk 71>;
+		assigned-clock-rates = <99999999>;
+		#clock-cells = <0>;
+		clock-output-names = "fabric_clk";
+		clocks = <&zynqmp_clk 71>;
+	};
+	afi0: afi0 {
+		status = "okay";
+		compatible = "xlnx,afi-fpga";
+		resets = <&zynqmp_reset 116>, <&zynqmp_reset 117>, <&zynqmp_reset 118>, <&zynqmp_reset 119>;
+		config-afi = < 0 0>, <1 0>, <2 0>, <3 0>, <4 0>, <5 0>, <6 0>, <7 0>, <8 0>, <9 0>, <10 0>, <11 0>, <12 0>, <13 0>, <14 0xa00>, <15 0x000>;
+	};
+};
+
+&amba {
+	ranges;
+	compatible = "simple-bus";
+	#address-cells = <2>;
+	#size-cells = <2>;
+	axi_gpio_sysctl: gpio@80020000 {
+		#interrupt-cells = <2>;
+		interrupts = < 0 94 4 >;
+		xlnx,gpio-board-interface = "Custom";
+		compatible = "xlnx,axi-gpio-2.0" , "xlnx,xps-gpio-1.00.a";
+		xlnx,all-outputs = <0>;
+		#gpio-cells = <2>;
+		xlnx,gpio-width = <17>;
+		interrupt-parent = <&gic>;
+		xlnx,dout-default = <0x8000>;
+		xlnx,is-dual = <0>;
+		xlnx,ip-name = "axi_gpio";
+		xlnx,tri-default-2 = <0xffffffff>;
+		reg = <0x0 0x80020000 0x0 0x10000>;
+		xlnx,all-inputs-2 = <0>;
+		clocks = <&zynqmp_clk 71>;
+		xlnx,all-outputs-2 = <0>;
+		gpio-controller;
+		device_type = "gpio";
+		xlnx,interrupt-present = <1>;
+		xlnx,gpio2-board-interface = "Custom";
+		xlnx,edk-iptype = "PERIPHERAL";
+		xlnx,dout-default-2 = <0x0>;
+		status = "okay";
+		xlnx,gpio2-width = <32>;
+		clock-names = "s_axi_aclk";
+		interrupt-controller;
+		interrupt-names = "ip2intc_irpt";
+		xlnx,tri-default = <0xffffefff>;
+		xlnx,name = "axi_gpio_sysctl";
+		xlnx,all-inputs = <0>;
+		gpio-line-names =
+			/*  0 -  3 */ "DPL_EN", "DSYSTEM_EN", "DFPD_EN", "",
+			/*  4 -  7 */ "", "", "", "",
+			/*  8 - 11 */ "EEPROM_WP", "SYSCTRL_GPO0", "SYSCTRL_GPO1", "",
+			/* 12 - 15 */ "SYSCTRL_GPO2", "SYSCTRL_GPO3", "DLPD_EN", "USB_MUX_SEL",
+			/* 16 */ "";
+	};
+	axi_iic_sysmon: i2c@80060000 {
+		interrupts = < 0 93 4 >;
+		xlnx,iic-freq-khz = <100>;
+		compatible = "xlnx,axi-iic-2.1" , "xlnx,xps-iic-2.00.a";
+		xlnx,scl-inertial-delay = <0>;
+		interrupt-parent = <&gic>;
+		xlnx,ip-name = "axi_iic";
+		xlnx,disable-setup-violation-check = <0>;
+		reg = <0x0 0x80060000 0x0 0x10000>;
+		clocks = <&zynqmp_clk 71>;
+		xlnx,gpo-width = <1>;
+		xlnx,s-axi-aclk-freq-hz = <0x5f5dd19>;
+		xlnx,edk-iptype = "PERIPHERAL";
+		xlnx,static-timing-reg-width = <0>;
+		xlnx,sda-level = <1>;
+		status = "okay";
+		clock-names = "s_axi_aclk";
+		xlnx,ten-bit-adr = <0>;
+		xlnx,default-value = <0x0>;
+		interrupt-names = "iic2intc_irpt";
+		xlnx,iic-board-interface = "Custom";
+		xlnx,timing-reg-width = <32>;
+		xlnx,iic-freq = <100000>;
+		xlnx,smbus-pmbus-host = <0>;
+		xlnx,name = "axi_iic_sysmon";
+		xlnx,axi-aclk-freq-mhz = <0x5f5dd19>;
+		xlnx,sda-inertial-delay = <0>;
+		sysmon: i2c@18 {
+			#address-cells = <1>;
+			#size-cells = <0>;
+			compatible = "xlnx,versal-sysmon";
+			reg = <0x18>;
+			xlnx,numchannels = [10];
+			status = "okay";
+			#io-channel-cells = <1>;
+			supply@32 {
+				reg = <32>;
+				xlnx,name = "vccaux";
+			};
+			supply@33 {
+				reg = <33>;
+				xlnx,name = "vccaux_pmc";
+			};
+			supply@34 {
+				reg = <34>;
+				xlnx,name = "vccint";
+			};
+			supply@35 {
+				reg = <35>;
+				xlnx,name = "vccint_mmi_mmi";
+			};
+			supply@36 {
+				reg = <36>;
+				xlnx,name = "vcc_pmc";
+			};
+			supply@37 {
+				reg = <37>;
+				xlnx,name = "vcc_psfp";
+			};
+			supply@38 {
+				reg = <38>;
+				xlnx,name = "vcc_pslp";
+			};
+			supply@39 {
+				reg = <39>;
+				xlnx,name = "vcc_ram";
+			};
+			supply@40 {
+				reg = <40>;
+				xlnx,name = "vcc_soc";
+			};
+			supply@41 {
+				reg = <41>;
+				xlnx,name = "vp_vn";
+			};
+		};
+	};
+	axi_uartlite_2: serial@80070000 {
+		interrupts = < 0 104 1 >;
+		compatible = "xlnx,axi-uartlite-2.0" , "xlnx,xps-uartlite-1.00.a";
+		xlnx,uartlite-board-interface = "Custom";
+		xlnx,s-axi-aclk-freq-hz-d = <0x5f5dd19>;
+		interrupt-parent = <&gic>;
+		xlnx,ip-name = "axi_uartlite";
+		reg = <0x0 0x80070000 0x0 0x10000>;
+		xlnx,baudrate = <115200>;
+		clocks = <&zynqmp_clk 71>;
+		current-speed = <115200>;
+		xlnx,use-parity = <0>;
+		xlnx,edk-iptype = "PERIPHERAL";
+		xlnx,odd-parity = <0>;
+		status = "okay";
+		clock-names = "s_axi_aclk";
+		interrupt-names = "interrupt";
+		xlnx,name = "axi_uartlite_2";
+		xlnx,data-bits = <8>;
+		xlnx,parity = "No_Parity";
+	};
+	axi_uartlite_3: serial@80050000 {
+		interrupts = < 0 91 1 >;
+		compatible = "xlnx,axi-uartlite-2.0" , "xlnx,xps-uartlite-1.00.a";
+		xlnx,uartlite-board-interface = "Custom";
+		xlnx,s-axi-aclk-freq-hz-d = <0x5f5dd19>;
+		interrupt-parent = <&gic>;
+		xlnx,ip-name = "axi_uartlite";
+		reg = <0x0 0x80050000 0x0 0x10000>;
+		xlnx,baudrate = <115200>;
+		clocks = <&zynqmp_clk 71>;
+		current-speed = <115200>;
+		xlnx,use-parity = <0>;
+		xlnx,edk-iptype = "PERIPHERAL";
+		xlnx,odd-parity = <0>;
+		status = "okay";
+		clock-names = "s_axi_aclk";
+		interrupt-names = "interrupt";
+		xlnx,name = "axi_uartlite_3";
+		xlnx,data-bits = <8>;
+		xlnx,parity = "No_Parity";
+	};
+	debug_bridge_0: debug_bridge@80010000 {
+		xlnx,xvc-sw-id = <0x1>;
+		xlnx,fifo-style = "SUBCORE";
+		compatible = "xlnx,debug-bridge-3.0" , "generic-uio";
+		xlnx,pcie-ext-cfg-next-ptr = <0x0>;
+		xlnx,num-bs-master = <0>;
+		xlnx,pcie-ext-cfg-vsec-id = <0x8>;
+		xlnx,major-version = <14>;
+		xlnx,bscan-mux = <1>;
+		xlnx,xvc-hw-id = <0x1>;
+		xlnx,device-family = <0>;
+		xlnx,dclk-has-reset = <0>;
+		xlnx,ip-name = "debug_bridge";
+		xlnx,ir-width = <0>;
+		reg = <0x0 0x80010000 0x0 0x10000>;
+		xlnx,core-minor-alpha-ver = <97>;
+		clocks = <&zynqmp_clk 71>;
+		xlnx,xsdb-num-slaves = <0>;
+		xlnx,en-int-sim = <1>;
+		xlnx,clk-input-freq-hz = <300000000>;
+		xlnx,ir-id-instr = <0>;
+		xlnx,edk-iptype = "PERIPHERAL";
+		xlnx,pcie-ext-cfg-base-addr = <0x400>;
+		xlnx,build-revision = <0>;
+		xlnx,use-softbscan = <1>;
+		xlnx,ir-user1-instr = <0>;
+		xlnx,core-minor-ver = <0>;
+		xlnx,pcie-ext-cfg-vsec-rev-id = <0x0>;
+		status = "okay";
+		xlnx,chip-id = <0>;
+		clock-names = "s_axi_aclk";
+		xlnx,use-ext-bscan;
+		xlnx,tck-clock-ratio = <8>;
+		xlnx,minor-version = <1>;
+		xlnx,en-passthrough = <0>;
+		xlnx,core-type = <1>;
+		xlnx,user-scan-chain = <1>;
+		xlnx,use-bufr = <0>;
+		xlnx,pcie-ext-cfg-vsec-length = <0x20>;
+		xlnx,master-intf-type = <1>;
+		xlnx,design-type = <0>;
+		xlnx,debug-mode = <3>;
+		xlnx,name = "debug_bridge_0";
+		xlnx,core-major-ver = <1>;
+	};
+	fan_tach_0: fan_tach@80080000 {
+		interrupt-parent = <&gic>;
+		interrupts = < 0 89 4 0 90 4 >;
+		compatible = "xlnx,fan-tach-1.0";
+		status = "okay";
+		clock-names = "clk";
+		xlnx,ip-name = "fan_tach";
+		interrupt-names = "interrupt_fan_fail" , "interrupt_pwm_det";
+		xlnx,edk-iptype = "PERIPHERAL";
+		reg = <0x0 0x80080000 0x0 0x1000 0x0 0x80081000 0x0 0x1000 0x0 0x80082000 0x0 0x1000>;
+		clocks = <&zynqmp_clk 71>;
+		xlnx,name = "fan_tach_0";
+	};
+};
